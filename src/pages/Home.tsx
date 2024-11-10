@@ -117,7 +117,7 @@ const Home = () => {
                     t2={20} 
                     f={600} 
                     l="200%" 
-                    c="xs:hidden lg:block lg:mt-[150px] ml-auto mr-auto" 
+                    c="xs:hidden lg:block lg:mt-[150px] ml-auto mr-auto " 
                     text="View all" 
                 />
             </section>
