@@ -1,0 +1,67 @@
+.layout-swiper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 150px; 
+    height: 100%;
+}
+
+.distance-0, .distance-1, .distance-2, .distance-3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.distance-0 img {
+    border-radius: 100%;
+    width: 150px;
+    height: 150px;
+    border: solid 10px rgba(255, 138, 0, 0.4);
+}
+
+.distance-1 img {
+    width: 124px;
+    height: 124px;
+    transform: translateY(-20px); 
+    border-radius: 100%;
+}
+
+.distance-2 img {
+    width: 105px;
+    height: 105px;
+    transform: translateY(-40px);
+    border-radius: 100%;
+}
+
+.distance-3 img {
+    width: 66px;
+    height: 66px;
+    transform: translateY(-40px);
+    border-radius: 100%;
+}
+
+@media (max-width: 800px) {
+    .distance-0 img {
+        width: 62px;
+        height: 62px;
+        border: solid 5px rgba(255, 138, 0, 0.4);
+    }
+
+    .distance-1 img {
+        width: 50px;
+        height: 50px;
+        transform: translateY(0px);
+    }
+
+    .distance-2 img {
+        width: 42px;
+        height: 42px;
+        transform: translateY(0px);
+    }
+
+    .distance-3 img {
+        width: 42px;
+        height: 42px;
+        transform: translateY(0px);
+    }
+}

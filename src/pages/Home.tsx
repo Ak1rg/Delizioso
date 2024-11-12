@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import Catalog from "../components/catalog/Catalog"
 import Button from "../components/button/button"
+import SwiperComponent from "../components/swiper/swiper"
 
 const Home = () => {
     return (
@@ -120,6 +121,9 @@ const Home = () => {
                     c="xs:hidden lg:block lg:mt-[150px] ml-auto mr-auto " 
                     text="View all" 
                 />
+            </section> 
+            <section className=" mt-[150px] w-full px-[25px] py-[100px]">
+                <SwiperComponent/>
             </section>
         </>
     )
