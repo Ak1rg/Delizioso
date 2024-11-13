@@ -61,44 +61,44 @@ const initialState: IDishesState = {
         },
         {
             id: 7,
-            name: 'Lasagna',
-            price: 17.50,
-            img: './img/dishes/penne.png',
+            name: 'Bucatini',
+            price: 12.80,
+            img: './img/dishes/bucatini.png',
             ctgrs: 'dinner'
         },
         {
             id: 8,
-            name: 'Carbonara',
-            price: 15.25,
-            img: './img/dishes/spaghetti.png',
+            name: 'Cappelini',
+            price: 16.45,
+            img: './img/dishes/cappelini.png',
             ctgrs: 'dinner'
         },
         {
             id: 9,
-            name: 'Caprese Salad',
-            price: 11.90,
-            img: './img/dishes/risoto.png',
+            name: 'Farfalle',
+            price: 11.20,
+            img: './img/dishes/farfalle.png',
             ctgrs: 'lunch'
         },
         {
             id: 10,
-            name: 'Tiramisu',
-            price: 18.50,
-            img: './img/dishes/gnocchi.png',
+            name: 'Fettuccine',
+            price: 15.20,
+            img: './img/dishes/fettuccine.png',
             ctgrs: 'dessert'
         },
         {
             id: 11,
-            name: 'Cappuccino',
-            price: 14.20,
-            img: './img/dishes/rovioli.png',
+            name: 'Fusilli',
+            price: 19.90,
+            img: './img/dishes/fusilli.png',
             ctgrs: 'drink'
         },
         {
             id: 12,
-            name: 'Panna Cotta',
-            price: 16.90,
-            img: './img/dishes/spaghetti.png',
+            name: 'Linguine',
+            price: 14.90,
+            img: './img/dishes/linguine.png',
             ctgrs: 'dessert'
         },
         {
