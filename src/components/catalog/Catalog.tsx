@@ -1,9 +1,15 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useLayoutEffect, useState } from "react"
 import { IState } from "../../store/store"
 import styles from './catalog.module.css'
+import { IDishe } from "../../types/dishes"
+import { addToCart } from "../../store/reducers/dishesReduce"
+import { useNavigate } from "react-router-dom"
 
 const Catalog = () => {
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const ctgrs = useSelector((store:IState) => store.dishes.ctgrs)
     const dishes = useSelector((store:IState) => store.dishes.dishes)
@@ -23,6 +29,11 @@ const Catalog = () => {
             setCurrentPage(e => e-1)
         }
         setPages(Math.ceil(filteredDishes.length/6));
+    }
+    const addCart = (e:IDishe):void => {
+        const newObj = {...e,quantity:1}
+        dispatch(addToCart(newObj))
+        navigate('/order');
     }
 
     useEffect(() => {
@@ -91,8 +102,8 @@ const Catalog = () => {
                             <p className="xs:mt-[12px] lg:mt-[15px] max-w-[283px] line-clamp-2 lg:line-clamp-none w-full overflow-hidden xs:text-ellipsis text-center font-poppins xs:text-[12px] lg:text-[14px] xs:leading-[120%] lg:leading-[200%] font-[400] text-[#59442B]">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas consequat mi eget auctor aliquam, diam. </p>
                             <div className="xs:mt-[14px] lg:mt-[30px] max-w-[283px] flex justify-between w-full items-center">
                                 <p className="font-poppins xs:text-[16px] lg:text-[25px] xs:leading-[24px] lg:leading-[38px] font-[600] xs:text-colorO lg:text-colorBd">${e.price.toFixed(2)}</p>
-                                <button className="xs:hidden lg:block rounded-[160px]  bg-colorO  py-[11px] px-[35px] text-[16px] font-[600] font-poppins lg:leading-[200%] text-white ">Order now</button>
-                                <button className="xs:block lg:hidden w-[34px] h-[34px] rounded-[100%] flex items-center justify-center bg-colorO">
+                                <button onClick={() => addCart(e)} className="xs:hidden lg:block rounded-[160px]  bg-colorO  py-[11px] px-[35px] text-[16px] font-[600] font-poppins lg:leading-[200%] text-white ">Order now</button>
+                                <button onClick={() => addCart(e)} className="xs:block lg:hidden w-[34px] h-[34px] rounded-[100%] flex items-center justify-center bg-colorO">
                                     <div className="flex flex-col items-center justify-center relative">
                                         <div className="bg-white w-[12px] h-[1.5px] rounded-[50px] absolute"></div>
                                         <div className="bg-white w-[11px] h-[1.5px] rounded-[50px] absolute rotate-90 left-[11.5px]"></div>
