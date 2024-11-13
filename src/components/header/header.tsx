@@ -1,12 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { changeBurger, IDishesState } from "../../store/reducers/dishesReduce";
+import { changeBurger, } from "../../store/reducers/appReduce";
+import { IState } from "../../store/store";
 
 import classes from './header.module.scss'
 
 export default function Header() {
 
-    const burgerValue = useSelector((state:{dishes:IDishesState}) => state.dishes.burger)
+    const burgerValue = useSelector((state:IState) => state.app.burger)
+    const routes = useSelector((state:IState) => state.app.routes)
 
     const dispatch = useDispatch()
 
@@ -17,16 +19,16 @@ export default function Header() {
 
     return (
         <div className={classes.header}>
-            <Link to='/'>
+            <Link to={routes.home}>
                 <img src="./img/header/logo.png" alt="" />
             </Link>
             <div className={classes.btns}>
-                <Link to='/'>Home</Link>
-                <Link to='/'>Menu</Link>
-                <Link to='/'>About us</Link>
-                <Link to='/'>Order online</Link>
-                <Link to='/'>Reservation</Link>
-                <Link to='/'>Contact us</Link>
+                <Link to={routes.home}>Home</Link>
+                <Link to={routes.menu}>Menu</Link>
+                <Link to={routes.about}>About us</Link>
+                <Link to={routes.order}>Order online</Link>
+                <Link to={routes.reservation}>Reservation</Link>
+                <Link to={routes.contact}>Contact us</Link>
             </div>
             <div className={classes.cart}>
                 <div className="cart_back">
@@ -40,12 +42,12 @@ export default function Header() {
             </div>
             <div className={`${classes.burger} ${burgerValue?classes.active:''}`} onClick={closeBurger}>
                 <div className={classes.burger_menu}>
-                    <Link to="/" className={classes.link} onClick={closeBurger}>Home</Link>
-                    <Link to="/" className={classes.link} onClick={closeBurger}>Menu</Link>
-                    <Link to="/" className={classes.link} onClick={closeBurger}>About us</Link>
-                    <Link to="/" className={classes.link} onClick={closeBurger}>Order online</Link>
-                    <Link to="/" className={classes.link} onClick={closeBurger}>Reservation</Link>
-                    <Link to="/" className={classes.link} onClick={closeBurger}>Contact us</Link>
+                    <Link to={routes.home} className={classes.link} onClick={closeBurger}>Home</Link>
+                    <Link to={routes.menu} className={classes.link} onClick={closeBurger}>Menu</Link>
+                    <Link to={routes.about} className={classes.link} onClick={closeBurger}>About us</Link>
+                    <Link to={routes.order} className={classes.link} onClick={closeBurger}>Order online</Link>
+                    <Link to={routes.reservation} className={classes.link} onClick={closeBurger}>Reservation</Link>
+                    <Link to={routes.contact} className={classes.link} onClick={closeBurger}>Contact us</Link>
                     <button className={classes.button}>Log in</button>
                 </div>
             </div>

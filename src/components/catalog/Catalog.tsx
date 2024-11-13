@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux"
-import { IDishesState } from "../../store/reducers/dishesReduce"
 import { useEffect, useLayoutEffect, useState } from "react"
+import { IState } from "../../store/store"
 import styles from './catalog.module.css'
 
 const Catalog = () => {
 
-    const ctgrs = useSelector((store:{dishes:IDishesState}) => store.dishes.ctgrs)
-    const dishes = useSelector((store:{dishes:IDishesState}) => store.dishes.dishes)
+    const ctgrs = useSelector((store:IState) => store.dishes.ctgrs)
+    const dishes = useSelector((store:IState) => store.dishes.dishes)
 
     const [activeCtgr, setActiveCtgr] = useState<string>('')
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -77,7 +77,7 @@ const Catalog = () => {
                 {
                     filteredDishes.slice(currentPage*6-6,currentPage*6).map((e) => (
                         <div key={e.id} className=" xs:max-w-[155px] lg:max-w-[330px] flex flex-col items-center bg-[rgb(208,204,199,0.1)] xs:rounded-[18px] lg:rounded-[70px] xs:px-[13px] xs:py-[10px] lg:p-[30px]">
-                            <img src={e.img} alt="" />
+                            <img src={e.img} className="w-full xs:h-[130px] lg:h-[270px]" alt="" />
                             <p className="xs:mt-[10px] lg:mt-[24px] text-center font-poppins xs:text-[14px] lg:text-[30px] xs:leading-[21px] lg:leading-[200%] font-[600] text-colorBd">{e.name}</p>
                             <div className="mt-[5px] flex gap-[10px]">
                                 {

@@ -2,8 +2,13 @@ import { Link } from "react-router-dom"
 import Catalog from "../components/catalog/Catalog"
 import Button from "../components/button/button"
 import SwiperComponent from "../components/swiper/swiper"
+import { useSelector } from "react-redux"
+import { IState } from "../store/store"
 
 const Home = () => {
+
+    const routes = useSelector((state:IState) => state.app.routes)
+
     return (
         <>
             <section className="ml-auto mr-auto mt-[150px] max-w-[1170px] w-full px-[25px] flex xs:flex-col xl:flex-row">
@@ -22,8 +27,8 @@ const Home = () => {
                     xs:leading-[24px] lg:leading-[40px] text-[#5C4529]
                     ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sodales senectus dictum arcu sit tristique donec eget.</p>
                     <div className="mt-[30px] flex gap-[20px] xs:mx-auto xl:mx-px">
-                        <button className="block rounded-[160px] border-[colorB] bg-colorO xs:py-[8px] lg:py-[17px] xs:px-[34px] lg:px-[40px] xs:text-[12px] lg:text-[20px] font-[600] font-poppins xs:leading-[24px] lg:leading-[40px] text-white ">Order now</button>
-                        <button className="block rounded-[160px] border-[colorB] bg-[#3FA72F] xs:py-[8px] lg:py-[17px] xs:px-[34px] lg:px-[40px] xs:text-[12px] lg:text-[20px] font-[600] font-poppins xs:leading-[24px] lg:leading-[40px] text-white">Reservation</button>
+                        <Link to={routes.order}><button className="block rounded-[160px] border-[colorB] bg-colorO xs:py-[8px] lg:py-[17px] xs:px-[34px] lg:px-[40px] xs:text-[12px] lg:text-[20px] font-[600] font-poppins xs:leading-[24px] lg:leading-[40px] text-white ">Order now</button></Link>
+                        <Link to={routes.reservation}><button className="block rounded-[160px] border-[colorB] bg-[#3FA72F] xs:py-[8px] lg:py-[17px] xs:px-[34px] lg:px-[40px] xs:text-[12px] lg:text-[20px] font-[600] font-poppins xs:leading-[24px] lg:leading-[40px] text-white">Reservation</button></Link>
                     </div>
                 </div>
                 <img src="./img/home/preview_pasta.png" className="xs:mt-[100px] xl:mt-[30px] max-w-[600px] w-full xs:mx-auto xl:mx-px" alt="preview pasta homepage "/>
@@ -37,7 +42,7 @@ const Home = () => {
                             <span className="block text-colorO">delizioso</span>
                         </h1>
                         <p className="mt-[30px] font-poppins xs:text-[12px] lg:text-[20px] font-[400] text-colorB align-left leading-[200%]">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisis ultricies at eleifend proin. Congue nibh nulla malesuada ultricies nec quam</p>
-                        <Link to='/menu'><button className="mt-[30px] rounded-[160px] border-[colorB] bg-colorO xs:py-[13px] lg:py-[17px] xs:px-[34px] lg:px-[45px] xs:text-[14px] lg:text-[20px] font-[400] font-poppins xs:leading-[180%] lg:leading-[40px] text-white ">See our menu</button></Link>
+                        <Link to={routes.menu}><button className="mt-[30px] rounded-[160px] border-[colorB] bg-colorO xs:py-[13px] lg:py-[17px] xs:px-[34px] lg:px-[45px] xs:text-[14px] lg:text-[20px] font-[400] font-poppins xs:leading-[180%] lg:leading-[40px] text-white ">See our menu</button></Link>
                     </div>
                 </div>
             </section>
@@ -71,7 +76,7 @@ const Home = () => {
                         xs:mt-[32px] xl:mt-[50px] max-w-[433px] font-poppins xs:text-[12px] lg:text-[20px] font-[400]
                         xs:leading-[24px] lg:leading-[200%] text-[#5C4529]
                         ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisis ultricies at eleifend proin. Congue nibh nulla malesuada ultricies nec quam </p>
-                        <Link to='/'><button className="xs:mt-[40px] xl:mt-[130px] rounded-[160px] border-[colorB] bg-colorO xs:py-[13px] lg:py-[17px] xs:px-[41px] lg:px-[55px] xs:text-[14px] lg:text-[20px] font-[600] font-poppins xs:leading-[200%] lg:leading-[40px] text-white ">Resevation</button></Link>
+                        <Link to={routes.reservation}><button className="xs:mt-[40px] xl:mt-[130px] rounded-[160px] border-[colorB] bg-colorO xs:py-[13px] lg:py-[17px] xs:px-[41px] lg:px-[55px] xs:text-[14px] lg:text-[20px] font-[600] font-poppins xs:leading-[200%] lg:leading-[40px] text-white ">Resevation</button></Link>
                     </div>
                 </div>  
             </section>
@@ -107,20 +112,22 @@ const Home = () => {
                         <p className="xs:mt-[5px] lg:mt-[30px] text-center font-poppins xs:text-[14px] lg:text-[25px] xs:leading-[21px] lg:leading-[200%] font-[400] text-[rgb(160,141,118)]">Chef</p>
                     </div>
                 </div>
-                <Button 
-                    color="#FF8A00" 
-                    px={78} 
-                    px2={78} 
-                    py={17}
-                    py2={17} 
-                    r={162} 
-                    t={20} 
-                    t2={20} 
-                    f={600} 
-                    l="200%" 
-                    c="xs:hidden lg:block lg:mt-[150px] ml-auto mr-auto " 
-                    text="View all" 
-                />
+                <Link to={routes.about}>
+                    <Button 
+                        color="#FF8A00" 
+                        px={78} 
+                        px2={78} 
+                        py={17}
+                        py2={17} 
+                        r={162} 
+                        t={20} 
+                        t2={20} 
+                        f={600} 
+                        l="200%" 
+                        c="xs:hidden lg:block lg:mt-[150px] ml-auto mr-auto " 
+                        text="View all" 
+                    />
+                </Link>
             </section> 
             <section className="mt-[150px] w-full px-[25px] py-[100px]">
                 <SwiperComponent/>
@@ -136,12 +143,16 @@ const Home = () => {
                             <p className=" text-center font-poppins xs:text-[12px] lg:text-[20px] xs:leading-[18px] lg:leading-[200%] font-[400] text-white">Dinner : sunday : 04:00pm-08:00pm</p>
                         </div>
                         <div className="flex xs:flex-col lg:flex-row gap-[20px]  items-center justify-center xs:mt-[20px] lg:mt-[10px] xl:mt-[90px] lg:bm-[110px] xl:mb-[70px]">
-                            <button className='xs:rounded-[45px] lg:rounded-[162px] xs:max-w-[168px] lg:max-w-[234px] xs:px-[31px] lg:px-[62px] xs:py-[11px] 
-                            lg:py-[17px] xs:text-[20px] lg:text-[20px] font-[600] 
-                            font-poppins leading-[200%] text-white bg-[#FF8A00] cursor-pointer'>Order now</button>
-                            <button className='xs:rounded-[45px] lg:rounded-[162px] xs:max-w-[168px] lg:max-w-[234px] xs:px-[24px] lg:px-[62px] xs:py-[11px] 
-                            lg:py-[17px] xs:text-[20px] lg:text-[20px] font-[600] 
-                            font-poppins leading-[200%] text-colorBd bg-[rgba(255,255,255,0.95)] cursor-pointer'>Reservation</button>
+                            <Link to={routes.order}>
+                                <button className='xs:rounded-[45px] lg:rounded-[162px] xs:max-w-[168px] lg:max-w-[234px] xs:px-[31px] lg:px-[62px] xs:py-[11px] 
+                                lg:py-[17px] xs:text-[20px] lg:text-[20px] font-[600] 
+                                font-poppins leading-[200%] text-white bg-[#FF8A00] cursor-pointer'>Order now</button>
+                            </Link>
+                            <Link to={routes.reservation}>
+                                <button className='xs:rounded-[45px] lg:rounded-[162px] xs:max-w-[168px] lg:max-w-[234px] xs:px-[24px] lg:px-[62px] xs:py-[11px] 
+                                lg:py-[17px] xs:text-[20px] lg:text-[20px] font-[600] 
+                                font-poppins leading-[200%] text-colorBd bg-[rgba(255,255,255,0.95)] cursor-pointer'>Reservation</button>
+                            </Link>
                         </div>
                     </div>
                 </div>

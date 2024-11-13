@@ -1,21 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { IDishesState } from '../../types/dishes'
 
-export interface IDishe {
-    id:number
-    name:string
-    price:number
-    img:string
-    ctgrs:string
-}
-
-export interface IDishesState {
-    burger: boolean
-    ctgrs:string[]
-    dishes:IDishe[]
-}
 
 const initialState: IDishesState = {
-    burger: false,
     dishes:[
         {
             id: 1,
@@ -151,12 +138,9 @@ export const dishesSlice = createSlice({
     name: 'dishes',
     initialState,
     reducers: {
-        changeBurger:(state,action) => {
-            state.burger = action.payload
-        }
     },
 })
 
-export const {changeBurger} = dishesSlice.actions
+// export const {} = dishesSlice.actions
 
 export default dishesSlice.reducer
