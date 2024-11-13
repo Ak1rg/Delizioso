@@ -101,7 +101,7 @@ const SwiperComponent = () => {
                     <SwiperSlide 
                         key={e} 
                         onClick={() => changeSlide(e-1)}
-                        className={`distance-${getDistanceNum(e-1)}`}
+                        className={`distance-${getDistanceNum(e-1)} cursor-pointer`}
                     >
                         <div className='layout-swiper'>
                             <img className={`distance-${getDistanceNum(e-1)}`} src={`./img/home/human${e}.png`} alt="" />

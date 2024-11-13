@@ -122,8 +122,29 @@ const Home = () => {
                     text="View all" 
                 />
             </section> 
-            <section className=" mt-[150px] w-full px-[25px] py-[100px]">
+            <section className="mt-[150px] w-full px-[25px] py-[100px]">
                 <SwiperComponent/>
+            </section>
+            <section className="ml-auto mr-auto my-[150px] max-w-[1170px] w-full px-[25px] flex flex-col">
+                <div className="relative">
+                    <img src="./img/home/footer_background.png" className="w-full min-h-[416px] h-416px absolute left-0 top-0 z-0" alt="" />
+                    <div className="flex flex-col z-[1] relative items-center">
+                        <h2 className="text-center font-tinos xs:mt-[30px] lg:mt-0 xs:max-w-[185px] lg:max-w-[600px] xs:text-[40px] lg:text-[80px] xs:leading-[115%] lg:leading-[200%] font-[700] text-white">we are open from</h2>
+                        <p className="xs:mt-[30px] lg:mt-0 text-center font-poppins xs:text-[16px] lg:text-[40px] xs:leading-[24px] lg:leading-[200%] font-[600] text-white">Monday-Sunday</p>
+                        <div className="xs:mt-[10px] lg:mt-0 xl:mt-[20px]">
+                            <p className=" text-center font-poppins xs:text-[12px] lg:text-[20px] xs:leading-[18px] lg:leading-[200%] font-[400] text-white">Launch : Mon-Sun : 11:00am-02:00pm</p>
+                            <p className=" text-center font-poppins xs:text-[12px] lg:text-[20px] xs:leading-[18px] lg:leading-[200%] font-[400] text-white">Dinner : sunday : 04:00pm-08:00pm</p>
+                        </div>
+                        <div className="flex xs:flex-col lg:flex-row gap-[20px]  items-center justify-center xs:mt-[20px] lg:mt-[10px] xl:mt-[90px] lg:bm-[110px] xl:mb-[70px]">
+                            <button className='xs:rounded-[45px] lg:rounded-[162px] xs:max-w-[168px] lg:max-w-[234px] xs:px-[31px] lg:px-[62px] xs:py-[11px] 
+                            lg:py-[17px] xs:text-[20px] lg:text-[20px] font-[600] 
+                            font-poppins leading-[200%] text-white bg-[#FF8A00] cursor-pointer'>Order now</button>
+                            <button className='xs:rounded-[45px] lg:rounded-[162px] xs:max-w-[168px] lg:max-w-[234px] xs:px-[24px] lg:px-[62px] xs:py-[11px] 
+                            lg:py-[17px] xs:text-[20px] lg:text-[20px] font-[600] 
+                            font-poppins leading-[200%] text-colorBd bg-[rgba(255,255,255,0.95)] cursor-pointer'>Reservation</button>
+                        </div>
+                    </div>
+                </div>
             </section>
         </>
     )
