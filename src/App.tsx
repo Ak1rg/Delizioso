@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import { IState } from "./store/store"
 import Menu from "./pages/Menu"
 import ScrollToTop from "./components/scrollToTop/ScrollToTop"
+import About from "./pages/About"
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path={routes.home} element={<Home/>}/>
         <Route path={routes.menu} element={<Menu/>}/>
+        <Route path={routes.about} element={<About/>}/>
       </Routes>
       <Footer/>
 

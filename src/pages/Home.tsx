@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import Catalog from "../components/catalog/Catalog"
-import Button from "../components/button/button"
 import SwiperComponent from "../components/swiper/swiper"
 import { useSelector } from "react-redux"
 import { IState } from "../store/store"
@@ -113,20 +112,9 @@ const Home = () => {
                     </div>
                 </div>
                 <Link to={routes.about}>
-                    <Button 
-                        color="#FF8A00" 
-                        px={78} 
-                        px2={78} 
-                        py={17}
-                        py2={17} 
-                        r={162} 
-                        t={20} 
-                        t2={20} 
-                        f={600} 
-                        l="200%" 
-                        c="xs:hidden lg:block lg:mt-[150px] ml-auto mr-auto " 
-                        text="View all" 
-                    />
+                    <button className='xs:hidden lg:block lg:mt-[150px] ml-auto mr-auto xs:rounded-[162px] lg:rounded-[162px] xs:max-w-[235px] lg:max-w-[235px] xs:px-[78px] lg:px-[78px]
+                            xs:py-[17px] lg:py-[17px] xs:text-[20px] lg:text-[20px] font-[600] 
+                            font-poppins leading-[200%] text-white bg-[#FF8A00] cursor-pointer'>View all</button>
                 </Link>
             </section> 
             <section className="mt-[150px] w-full px-[25px] py-[100px]">
