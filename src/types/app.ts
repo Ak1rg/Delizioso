@@ -1,5 +1,6 @@
 export interface IAppState {
     burger: boolean
+    mailState:null | string
     routes:IRoute
 }
 

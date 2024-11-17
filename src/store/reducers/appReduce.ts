@@ -4,6 +4,7 @@ import { IAppState } from '../../types/app'
 
 const initialState: IAppState = {
     burger: false,
+    mailState:null,
     routes:{
         home:'/',
         menu:'/menu',
@@ -20,10 +21,13 @@ export const appSlice = createSlice({
     reducers: {
         changeBurger:(state,action) => {
             state.burger = action.payload
-        }
+        },
+        changeMailState:(state,action) => {
+            state.mailState = action.payload
+        },
     },
 })
 
-export const {changeBurger} = appSlice.actions
+export const {changeBurger,changeMailState} = appSlice.actions
 
 export default appSlice.reducer

@@ -7,6 +7,9 @@ import { IState } from "./store/store"
 import Menu from "./pages/Menu"
 import ScrollToTop from "./components/scrollToTop/ScrollToTop"
 import About from "./pages/About"
+import Contact from "./pages/Contact"
+import Mail from "./components/mail/Mail"
+import Reservation from "./pages/Reservation"
 
 function App() {
 
@@ -19,10 +22,13 @@ function App() {
         <Route path={routes.home} element={<Home/>}/>
         <Route path={routes.menu} element={<Menu/>}/>
         <Route path={routes.about} element={<About/>}/>
+        <Route path={routes.contact} element={<Contact/>}/>
+        <Route path={routes.reservation} element={<Reservation/>}/>
       </Routes>
       <Footer/>
 
       <ScrollToTop/>
+      <Mail/>
     </>
   )
 }
