@@ -39,6 +39,7 @@ const Contact = () => {
             dispatch(changeMailState(null))
         }, 3000);
     };
+    
     return (
         <>
             <section className="ml-auto mr-auto xs:mt-[-100px] lg:mt-[150px] mb-[100px] max-w-[1170px] w-full px-[25px]">

@@ -1,17 +1,12 @@
-import { FC, useEffect, useRef, useState } from "react"
+import {  useEffect, useRef, useState } from "react"
 
-interface IProps {
-    placeholder:string
-    arr:string[]
-    classname:string
-    change: (updater: Partial<{ date: string; time: string; size: string }>) => void;
-}
-
-const Select:FC<IProps> = ({placeholder,arr,classname,change}) => {
-    const [value, setValue] = useState<string>(placeholder)
+const ModalSelect = () => {
+    const [value, setValue] = useState<string>('Accasion')
     const [open, setOpen] = useState<boolean>(false)
 
     const selectRef = useRef<HTMLDivElement>(null);
+
+    const arr =['Black friday','New year','Hallowen','Christmas']
 
     const clickClose = (e: MouseEvent): void => {
         if (selectRef.current && !selectRef.current.contains(e.target as Node)) {
@@ -30,24 +25,16 @@ const Select:FC<IProps> = ({placeholder,arr,classname,change}) => {
         };
     }, [open]);
 
-    const joinWords = (str: string): string => {
-        return str
-            .split(" ") 
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) 
-            .join(""); 
-    };
-
     const clickOption = (e:string) => {
-        change({[joinWords(value)]: e})
         setValue(e)
         setOpen(false)
     }
 
     return (
-        <div ref={selectRef} className={"select relative lg:w-[475px] "+classname}>
+        <div ref={selectRef} className={"selectModal relative lg:max-w-[520px] w-full mt-[40px]"}>
             <div 
                 onClick={() => setOpen(v => !v)}
-                className="select xs:py-[18px] lg:py-[40px] xs:px-[33px] lg:px-[50px] xs:w-[320px] lg:w-[475px] xs:rounded-[10px] lg:rounded-[20px] flex items-end
+                className="selectModal xs:py-[18px] lg:py-[40px] xs:px-[33px] lg:px-[50px]  xs:rounded-[10px] lg:rounded-[20px] flex items-end
             bg-[rgb(208,204,199,0.1)] font-poppins xs:text-[12px] lg:text-[20px] xs:leading-[34px] lg:leading-[110%]
             font-[400] select-none text-colorBd">
                 {value}
@@ -57,7 +44,7 @@ const Select:FC<IProps> = ({placeholder,arr,classname,change}) => {
                 overflow-hidden transition-[max-height] duration-300 ease-in-out font-poppins xs:text-[12px]
                 lg:text-[20px] xs:leading-[34px] lg:leading-[110%] font-[400] z-[3] border-colorBd border-[1px]
                 border-solid max-h-[230px] overflow-y-scroll 
-                ${open ? 'max-h-[300px]' : 'max-h-0'} ${open==true?'visible':'invisible'}`}>
+                ${open ? 'max-h-[500px]' : 'max-h-0'} ${open==true?'visible':'invisible'}`}>
                 {
                     arr.map((e:string,i:number) => (
                         <p className="xs:py-[18px] lg:py-[40px] xs:px-[33px] lg:px-[50px] w-full text-colorBd" key={i} onClick={() => clickOption(e)}>{e}</p>
@@ -68,4 +55,4 @@ const Select:FC<IProps> = ({placeholder,arr,classname,change}) => {
     )
 }
 
-export default Select
+export default ModalSelect
