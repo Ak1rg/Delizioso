@@ -1,6 +1,5 @@
 export interface IAppState {
     burger: boolean
-    modalReservation:boolean
     mailState:null | string
     routes:IRoute
 }

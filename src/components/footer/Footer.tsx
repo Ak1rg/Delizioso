@@ -16,7 +16,7 @@ const Footer = () => {
     ]
 
     return (
-        <footer className={` ml-auto mr-auto mt-13 mb-0 flex justify-center align-center pt-[120px] pb-[75px] bg-[rgb(49,31,9)]`}>
+        <footer className={`relative ml-auto mr-auto mt-13 mb-0 flex justify-center align-center pt-[120px] pb-[75px] bg-[rgb(49,31,9)] z-[10]`}>
             <div className={` flex justify-between w-full max-w-[1170px] px-[25px] flex-wrap `}>
                 <div className='flex flex-col xs:gap-[30px] md:gap-[0px] justify-between xs:w-[100%] md:w-1/2 xl:w-auto xs:mt-[30px] pr-[40px]'>
                     <img className='w-[132px]' src="./img/footer/footer_logo.png" alt="" />

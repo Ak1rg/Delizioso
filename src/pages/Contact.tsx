@@ -140,14 +140,16 @@ const Contact = () => {
                     </button>
                 </form>
             </section>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47499806.47645658!2d-72.91037590000008!3d43.39462459999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12c9e741ffba78bb%3A0x2f2d103fa56a6d35!2sDelizioso!5e0!3m2!1sru!2skg!4v1731611890778!5m2!1sru!2skg" 
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d92773.05891196559!2d5.136499!3d43.394625!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12c9e741ffba78bb%3A0x2f2d103fa56a6d35!2sDelizioso!5e0!3m2!1sru!2skg!4v1732270691425!5m2!1sru!2skg" 
                 width="600" 
                 height="450" 
-                className="border-0 w-full" 
-                allowFullScreen={true}
+                className="border-0 w-full"  
+                allowFullScreen={true} 
                 loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
+                referrerPolicy="no-referrer-when-downgrade">
+            </iframe>
+
         </>
     )
 }

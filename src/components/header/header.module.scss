@@ -115,7 +115,7 @@ $colorO:#FF8A00;
     top: 0;
 }
 .active {
-    z-index: 3;
+    z-index: 12;
     opacity: 1;
     background-color: rgba(0, 0, 0, 0.4);
     transition: background-color 0.1s ease, opacity 0.1s ease;
