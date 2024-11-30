@@ -1,5 +1,6 @@
 export interface IAppState {
     burger: boolean
+    signup:string
     mailState:null | string
     routes:IRoute
 }
@@ -13,4 +14,5 @@ interface IRoute {
     contact:string
     login:string
     signup:string
+    profile:string
 }

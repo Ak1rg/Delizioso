@@ -40,7 +40,7 @@ export default function Header() {
                     <img src="./img/header/burger_logo.svg" alt="" onClick={() => dispatch(changeBurger(true))}/>
                 </div>
             </div>
-            <div className={`${classes.burger} ${burgerValue?classes.active:''} xs:z-[14]`} onClick={closeBurger}>
+            <div className={`z-[-14] ${classes.burger} ${burgerValue?classes.active:''}`} onClick={closeBurger}>
                 <div className={classes.burger_menu}>
                     <Link to={routes.home} className={classes.link} onClick={closeBurger}>Home</Link>
                     <Link to={routes.menu} className={classes.link} onClick={closeBurger}>Menu</Link>
