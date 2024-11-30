@@ -1,38 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { IUser } from '../../types/user'
 
-
 const initialState: IUser = {
-    books:[
-        {
-            time:'12:00',
-            date:'16',
-            partySize:'2',
-            id:123456
-        },
-        {
-            time:'12:00',
-            date:'16',
-            partySize:'2',
-            id:123456
-        },
-        {
-            time:'12:00',
-            date:'16',
-            partySize:'2',
-            id:123456
-        },
-        {
-            time:'12:00',
-            date:'16',
-            partySize:'2',
-            id:123456
-        },
-    ],
-    fullName:'Alibek Eresheev',
-    email:'awfawfaw',
+    books:[],
+    fullName:null,
+    email:null,
     uid:null,
-    date:'awfawfaw',
+    date:null,
 }
 
 export const userSlice = createSlice({

@@ -1,12 +1,32 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAppSelector } from "../store/store"
 import { ITable } from "../types/user"
+import { useNavigate } from "react-router-dom"
+
 
 const Profile = () => {
 
     const userData = useAppSelector(s => s.user)
-
+    const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(true);
     const [showTables, setshowTables] = useState<boolean>(true)
+    useEffect(() => {
+        if (
+            !userData.fullName &&
+            !userData.email &&
+            userData.books.length === 0 && 
+            !userData.date &&
+            !userData.uid
+        ) {
+            navigate('/signup');
+        } else {
+            setIsLoading(false)
+        }
+    }, [userData, navigate]);
+
+    if (isLoading) {
+        return null; 
+    }
 
     return (
         <>
@@ -34,6 +54,7 @@ const Profile = () => {
                     ))}
                 </div>
                 {userData.books.length > 3 && <h6 onClick={() => setshowTables(e=>!e)} className="mt-[10px] cursor-pointer text-right font-poppins xs:text-[14px] lg:text-[24px] font-[500] text-colorBd leading-[200%]">Show {showTables?'all':'less'}</h6>}
+                {userData.books.length==0&&<h3 className="font-tinos text-center xs:text-[25px] lg:text-[40px] xs:leading-[115%] lg:leading-[88px] font-[700] text-colorBd">You don't have reservation</h3>}
             </section>
         </>
     )

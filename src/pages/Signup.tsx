@@ -61,6 +61,7 @@ const Signup = () => {
         try {
             await setDoc(doc(db,"users",userData.uid),userData)
             dispatch(setUser(userData))
+            navigate('/profile')
         } catch (error) {
             if (error instanceof FirebaseError) {
                 setErrorForm(`Error adding user: ${error.message}`)
@@ -68,7 +69,6 @@ const Signup = () => {
                 setErrorForm(`Unknown error: ${error}`)
             }
         }
-        navigate('/')
     }
 
     const getErrorMessage = (errorCode: string): string => {
@@ -107,8 +107,10 @@ const Signup = () => {
             } else if(showValue === 'login') {
                 userCredential = await signInWithEmailAndPassword(auth, data.email, data.password)
                 const userData = getDoc(doc(db,"users",userCredential.user.uid))
-                userData.then(data => dispatch(setUser({...data.data()})))
-                navigate('/')
+                userData.then(data => {
+                    dispatch(setUser({...data.data()}))
+                    navigate('/profile')
+                })
             }
             // if (check) {
             //     Cookies.set('firebaseToken',await getToken(), { secure: true, sameSite: 'Strict', expires: 365 });
@@ -145,9 +147,8 @@ const Signup = () => {
                             {...register('fullName',{
                                 required:true,
                                 pattern:{
-                                    value:/^[a-zA-Z]+$/,
+                                    value:/^[a-zA-Z]+(?:\s+[a-zA-Z]+)+$/,
                                     message:'',
-                                    
                                 }
                             })}
                             style={{border:`solid 1px ${errors.fullName?'red':'rgb(208,204,199,0.1)'}`}}
