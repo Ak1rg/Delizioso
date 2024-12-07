@@ -1,15 +1,21 @@
-import { useDispatch, useSelector } from "react-redux"
-import { IState } from "../../../store/store"
-import { changeModalReservationConfirm } from "../../../store/reducers/reservationReduce"
+import { useDispatch } from "react-redux"
+import { useAppSelector } from "../../../store/store"
+import { changeModalReservationConfirm, closeReservation, removeReservation } from "../../../store/reducers/reservationReduce"
 
 const Cancel = () => {
 
-    const info = useSelector((state:IState) => state.reservation.reservationInfo)
-    const idValue = useSelector((state:IState) => state.reservation.actualId)
+    const info = useAppSelector(s => s.reservation.reservationInfo)
+    const idValue = useAppSelector(s => s.reservation.actualId)
+    const user = useAppSelector(s => s.user.uid)
     const dispatch = useDispatch()
 
     const backBtn = () => {
         dispatch(changeModalReservationConfirm('confirm'))
+    }
+
+    const cancelBtn = () => {
+        dispatch(removeReservation({uid:user,actualId:idValue}))
+        dispatch(closeReservation())
     }
 
     return (
@@ -46,7 +52,7 @@ const Cancel = () => {
                     className="flex justify-center rounded-[20px] bg-[rgb(0,116,255,0.2)] xs:py-[19px] lg:py-[29px] xs:px-[55px] lg:px-[90px] xs:text-[12px] lg:text-[20px] font-[400] font-poppins xs:leading-[110%] lg:leading-[110%] text-[#123968]">
                         Back
                     </button>
-                    <button 
+                    <button onClick={cancelBtn}
                     className="flex justify-center rounded-[20px] bg-[rgb(255,0,0,0.1)] xs:py-[19px] lg:py-[29px] xs:px-[55px] lg:px-[90px] xs:text-[12px] lg:text-[20px] font-[400] font-poppins xs:leading-[110%] lg:leading-[110%] text-[#EA1010]">
                         Cancel
                     </button>

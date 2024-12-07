@@ -1,4 +1,4 @@
-import { IReservationObj } from './../../types/reservation';
+import { ITable } from './../../types/user';
 import { createSlice } from '@reduxjs/toolkit'
 import { IReservation } from '../../types/reservation';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -56,7 +56,7 @@ export const reservationSlice = createSlice({
             if(action.payload.uid!==null){
                 getDoc(doc(db,'users',action.payload.uid))
                 .then(e => {
-                    const changedObj = e.data()?.books.map((book:IReservationObj) =>{
+                    const changedObj = e.data()?.books.map((book:ITable) =>{
                         if(book.id==action.payload.actualId){
                             return {
                                 ...book,
@@ -74,6 +74,20 @@ export const reservationSlice = createSlice({
                 console.log('changed')
             }
         },
+        removeReservation:(_,action)=>{
+            if(action.payload.uid!==null){
+                getDoc(doc(db,'users',action.payload.uid))
+                .then(e => {
+                    const changedObj = e.data()?.books.filter((book:ITable) => book.id!==action.payload.actualId)
+                    updateDoc(doc(db,'users',action.payload.uid),{
+                        books:changedObj
+                    })
+                })
+                .catch(error => console.error(error))
+            } else {
+                console.log('cancel')
+            }
+        },
         closeReservation:(state) => {
             state.reservationInfo = {
                 Date:'',
@@ -88,7 +102,7 @@ export const reservationSlice = createSlice({
 })
 
 export const { changeReservationInfo,changeModalReservation,changeModalReservationConfirm,
-            addNewReservation,closeReservation,changeCurrentReservation
+            addNewReservation,closeReservation,changeCurrentReservation,removeReservation
             } = reservationSlice.actions
 
 export default reservationSlice.reducer
