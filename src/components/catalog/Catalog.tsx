@@ -5,6 +5,7 @@ import styles from './catalog.module.css'
 import { IDishe } from "../../types/dishes"
 import { addToCart } from "../../store/reducers/dishesReduce"
 import { useNavigate } from "react-router-dom"
+import { db } from "../../firebase"
 
 const Catalog = () => {
 

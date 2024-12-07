@@ -1,3 +1,5 @@
+import { ITable } from "./user";
+
 export interface IReservation {
     reservationInfo:{
         [key: string]: string;
@@ -9,13 +11,6 @@ export interface IReservation {
         time:string[]
         partysize:string[]
     }
-    reservationList:IReservationObj[],
+    reservationList:ITable[],
     actualId:number
-}
-
-interface IReservationObj {
-    Date:string,
-    Time:string,
-    PartySize:string,
-    id:number
 }

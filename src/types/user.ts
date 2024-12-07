@@ -7,8 +7,8 @@ export interface IUser {
 }
 
 export interface ITable {
-    time:string
-    date:string
-    partySize:string
+    Time:string
+    Date:string
+    PartySize:string
     id:number
 }

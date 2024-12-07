@@ -32,16 +32,6 @@ const Register = () => {
     const onSubmitClick = async (data: IForm) => {
         dispatch(changeModalReservation('done'))
         dispatch(changeModalReservationConfirm('confirm'))
-        // try {
-        //     await axios.post('http://localhost:5000/send-email', {
-        //         name: `${data.firstName} ${data.lastName}`,
-        //         email: data.email,
-        //         subject: data.subject,
-        //         message: data.message,
-        //     });
-        // } catch (error) {
-        //     console.error(error);
-        // }
     };
 
     return (

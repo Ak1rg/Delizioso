@@ -19,11 +19,11 @@ const Confirm = () => {
                 <img className="absolute left-0 z-[2]  xs:h-[140px] lg:h-[232px] w-full" src="./img/reservation/green_background.png" alt="" />
                 <div className="xs:py-[15px] lg:py-[44px] relative z-[3]">
                     <h2 className="align-left font-poppins xs:text-[20px] lg:text-[40px] xs:leading-[21px] lg:leading-[110%] font-[600] text-white">Reservation has been confirmed</h2>
-                    <div className="flex gap-[16px] mt-[28px]">
+                    <div className="flex items-center gap-[16px] mt-[28px]">
                         <img className="xs:w-[19px] lg:w-[30px] xs:h-[19px] lg:h-[30px]" src="./img/reservation/icon_confirm.svg" alt="" />
                         <p className="font-poppins xs:text-[12px] lg:text-[20px] xs:leading-[18px] lg:leading-[110%] font-[400] text-white">The confirmation result has been sent to your email</p>
                     </div>
-                    <div className="flex gap-[16px] mt-[12px]">
+                    <div className="flex items-center gap-[16px] mt-[12px]">
                         <img className="xs:w-[19px] lg:w-[30px] xs:h-[19px] lg:h-[30px]" src="./img/reservation/icon_booking.svg" alt="" />
                         <p className="font-poppins xs:text-[12px] lg:text-[20px] xs:leading-[18px] lg:leading-[110%] font-[400] text-white">Booking ID:#{idValue}</p>
                     </div>

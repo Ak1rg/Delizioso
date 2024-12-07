@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react"
-import { changeReservationInfo } from "../../store/reducers/reservationReduce";
+import { changeCurrentReservation, changeReservationInfo } from "../../store/reducers/reservationReduce";
 import { useDispatch, useSelector } from "react-redux";
-import { IState } from "../../store/store";
+import { IState, useAppSelector } from "../../store/store";
 
 interface IProps {
     placeholder:string
@@ -18,6 +18,8 @@ const Select:FC<IProps> = ({placeholder,dataValue,classname}) => {
     const dispatch = useDispatch()
 
     const arrs = useSelector((state:IState) => state.reservation.dataReservation)
+    const actualID = useSelector((state:IState) => state.reservation.actualId)
+    const user = useAppSelector(s => s.user.uid)
     const arr = arrs[dataValue.toLowerCase() as keyof typeof arrs];
 
     const clickClose = (e: MouseEvent): void => {
@@ -40,6 +42,7 @@ const Select:FC<IProps> = ({placeholder,dataValue,classname}) => {
 
     const clickOption = (e:string) => {
         dispatch(changeReservationInfo({name:dataValue,value:e}))
+        dispatch(changeCurrentReservation({uid:user,actualId:actualID,name:dataValue,value:e}))
         setValue(e)
         setOpen(false)
     }

@@ -35,7 +35,9 @@ export default function Header() {
                     <img src="./img/header/cart.svg" alt="" />
                     <div className="cart_back_count">3</div>
                 </div>
-                <button>Log in</button>
+                <Link to={routes.signup}>
+                    <button>Log in</button>
+                </Link>
                 <div className="ham">
                     <img src="./img/header/burger_logo.svg" alt="" onClick={() => dispatch(changeBurger(true))}/>
                 </div>

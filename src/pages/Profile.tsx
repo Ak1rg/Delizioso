@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useAppSelector } from "../store/store"
-import { ITable } from "../types/user"
 import { useNavigate } from "react-router-dom"
+import { ITable } from "../types/user"
 
 
 const Profile = () => {
@@ -47,9 +47,9 @@ const Profile = () => {
                     {userData.books.map((table:ITable) => (
                         <div key={table.id} className="bg-[rgb(208,204,199)] bg-opacity-10 rounded-[20px] border-solid border-colorBd border-[1px] px-[20px] py-[10px]">
                             <h6 className="font-poppins xs:text-[14px] lg:text-[24px] font-[500] text-colorBd leading-[200%]">Reservation table: {table.id}</h6>
-                            <p className="font-poppins xs:text-[12px] lg:text-[20px] font-[500] text-colorBd leading-[200%]">Time: {table.time}</p>
-                            <p className="font-poppins xs:text-[12px] lg:text-[20px] font-[500] text-colorBd leading-[200%]">Date: {table.date}</p>
-                            <p className="font-poppins xs:text-[12px] lg:text-[20px] font-[500] text-colorBd leading-[200%]">Group size: {table.partySize}</p>
+                            <p className="font-poppins xs:text-[12px] lg:text-[20px] font-[500] text-colorBd leading-[200%]">Time: {table.Time}</p>
+                            <p className="font-poppins xs:text-[12px] lg:text-[20px] font-[500] text-colorBd leading-[200%]">Date: {table.Date}</p>
+                            <p className="font-poppins xs:text-[12px] lg:text-[20px] font-[500] text-colorBd leading-[200%]">Group size: {table.PartySize}</p>
                         </div>
                     ))}
                 </div>

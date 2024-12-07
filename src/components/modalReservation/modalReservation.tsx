@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { IState } from "../../store/store"
 import Register from "./Register"
-import { changeModalReservation } from "../../store/reducers/reservationReduce"
+import { closeReservation } from "../../store/reducers/reservationReduce"
 import { Link } from "react-router-dom"
 import ConfirmPage from "./confirm/ConfirmPage"
 
@@ -13,7 +13,7 @@ const ModalReservation = () => {
 
     return (
         <div className={`${openValue?'flex':'hidden'} ${openValue=='done'?'lg:pb-[760px] xl:pb-[200px]':''} absolute top-0 left-0 w-full flex flex-col items-center lg:bg-colorBd lg:bg-opacity-80 z-[2] lg:p-[25px] `}>
-            <div onClick={() => dispatch(changeModalReservation(''))}
+            <div onClick={() => dispatch(closeReservation())}
             className="cursor-pointer
             xs:hidden lg:flex w-[80px] h-[80px] rounded-full bg-white mb-[30px] justify-center items-center relative">
                 <div className="w-[28px] h-[2px] bg-black absolute rotate-45"></div>

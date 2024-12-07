@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
 import ModalReservation from "../components/modalReservation/modalReservation"
 import Select from "../components/select/Select"
-import { IState } from "../store/store"
-import { addNewReservation, changeModalReservation } from "../store/reducers/reservationReduce"
+import { IState, useAppSelector } from "../store/store"
+import { addNewReservation, changeModalReservation, changeModalReservationConfirm } from "../store/reducers/reservationReduce"
 
 const Reservation = () => {
 
@@ -10,11 +10,17 @@ const Reservation = () => {
 
     const openValue = useSelector((state:IState) => state.reservation.modalReservation)
     const info = useSelector((state:IState) => state.reservation.reservationInfo)
+    const user = useAppSelector(s => s.user.uid)
 
     const openModal = () => {
         if(info.Date !== '' && info.Time !== '' && info.PartySize !== '') {
-            dispatch(changeModalReservation('register'))
-            dispatch(addNewReservation())
+            if(user!==null){
+                dispatch(addNewReservation(user))
+                dispatch(changeModalReservationConfirm('confirm'))
+                dispatch(changeModalReservation('done'))
+            } else {
+                dispatch(changeModalReservation('register'))
+            }
         }
     }
 

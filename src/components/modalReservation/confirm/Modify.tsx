@@ -12,6 +12,7 @@ const Modify = () => {
 
     const backBtn = () => {
         dispatch(changeModalReservationConfirm('confirm'))
+        // dispatch(changeCurrentReservation(userCredential.user.uid))
     }
 
     return (
