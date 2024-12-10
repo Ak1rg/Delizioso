@@ -15,4 +15,5 @@ interface IRoute {
     login:string
     signup:string
     profile:string
+    checkout:string
 }

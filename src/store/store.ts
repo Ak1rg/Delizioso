@@ -8,6 +8,7 @@ import reservationSlice from './reducers/reservationReduce';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { IUser } from '../types/user';
 import userSlice from './reducers/userReduce';
+import orderSlice from './reducers/orderReduce';
 
 export interface IState{
     app:IAppState
@@ -22,6 +23,7 @@ export const store = configureStore({
         dishes: dishesSlice,
         reservation:reservationSlice,
         user:userSlice,
+        order:orderSlice,
     },
 })
 

@@ -7,15 +7,16 @@ const initialState: IAppState = {
     mailState:null,
     signup:'login',
     routes:{
-        home:'/',
-        menu:'/menu',
-        about:'/about',
-        reservation:'/reservation',
-        order:'/order',
-        contact:'/contact',
-        login:'/login',
-        signup:'/signup',
-        profile:'/profile',
+        home:'/Delizioso/',
+        menu:'/Delizioso/menu',
+        about:'/Delizioso/about',
+        reservation:'/Delizioso/reservation',
+        order:'/Delizioso/order',
+        contact:'/Delizioso/contact',
+        login:'/Delizioso/login',
+        signup:'/Delizioso/signup',
+        profile:'/Delizioso/profile',
+        checkout:'/Delizioso/checkout',
     }
 }
 

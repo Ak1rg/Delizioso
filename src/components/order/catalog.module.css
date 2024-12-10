@@ -1,0 +1,27 @@
+@media screen and (min-width:1px) {
+    .catalog{
+        grid-template-columns: 1fr;
+        place-items: center;
+    }
+}
+@media screen and (min-width:375px) {
+    .catalog{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media screen and (min-width:800px) {
+    .catalog{
+        grid-template-columns: 1fr;
+        place-items: center;
+    }
+}
+@media screen and (min-width:855px) {
+    .catalog{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media screen and (min-width:1120px) {
+    .catalog{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}

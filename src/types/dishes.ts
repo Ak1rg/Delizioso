@@ -1,7 +1,6 @@
 export interface IDishesState {
     ctgrs:string[]
     dishes:IDishe[]
-    cart:IDishe[]
 }
 
 export interface IDishe {

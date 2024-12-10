@@ -33,7 +33,7 @@ const Reservation = () => {
                 <div className="absolute ml-auto mr-auto xl:left-[-130px] xs:top-[-80px] xl:top-[40px]">
                     <img className="border-[rgb(208,204,199,0.2)] xs:border-[30px] lg:border-[50px] border-solid rounded-[100%] xs:w-[230px] xs:h-[230px] lg:w-[626px] lg:h-[626px]" src="./img/reservation/main_img.png" alt="" />
                 </div>
-                <div className="flex flex-col max-w-[475px] xs:mt-[220px] lg:mt-[650px] xl:mt-[20px] mb-[100px]">
+                <div className="flex flex-col max-w-[476px] xs:mt-[220px] lg:mt-[650px] xl:mt-[20px] mb-[100px]">
                     <h1 className="font-tinos xs:text-[30px] lg:text-[80px] xs:leading-[34px] lg:leading-[110%] font-[700] text-colorBd">Book a table</h1>
                     <Select placeholder={'Date'} dataValue='Date' classname="mt-[40px]"/>
                     <Select placeholder={'Time'} dataValue='Time' classname="mt-[40px]"/>

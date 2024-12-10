@@ -132,27 +132,15 @@ const initialState: IDishesState = {
         }
     ],
     ctgrs:['Dinner','Lunch','Dessert','Drink',],
-    cart:[]
 }
 
 export const dishesSlice = createSlice({
     name: 'dishes',
     initialState,
     reducers: {
-        addToCart:(state,action) => {
-            if (state.cart.some(item => item.name === action.payload.name)){
-                state.cart = state.cart.map(item =>
-                    item.name === action.payload.name
-                        ? { ...item, quantity: (item.quantity || 1) + 1 }
-                        : item
-                );
-            } else {
-                state.cart.push(action.payload)
-            }
-        }
     },
 })
 
-export const { addToCart } = dishesSlice.actions
+// export const { } = dishesSlice.actions
 
 export default dishesSlice.reducer

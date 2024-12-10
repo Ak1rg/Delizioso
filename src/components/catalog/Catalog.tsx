@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { IState } from "../../store/store"
 import styles from './catalog.module.css'
 import { IDishe } from "../../types/dishes"
-import { addToCart } from "../../store/reducers/dishesReduce"
 import { useNavigate } from "react-router-dom"
 import { db } from "../../firebase"
+import { doc, getDoc } from "firebase/firestore"
+import { addToCart } from "../../store/reducers/orderReduce"
 
 const Catalog = () => {
 
@@ -13,11 +14,28 @@ const Catalog = () => {
     const navigate = useNavigate()
 
     const ctgrs = useSelector((store:IState) => store.dishes.ctgrs)
-    const dishes = useSelector((store:IState) => store.dishes.dishes)
 
+    const getDishes = async () => {
+        try {
+            const res = await getDoc(doc(db, 'app', 'app'));
+            const fetchedDishes = res.data()?.catalog || [];
+            setDishes(fetchedDishes);
+            setFilteredDishes(fetchedDishes);
+        } catch (error) {
+            console.error(error);
+            setDishes([]);
+            setFilteredDishes([]);
+        } finally {
+            setisLoading(false);
+        }
+    };
+
+
+    const [dishes, setDishes] = useState<IDishe[]>([])
+    const [isLoading, setisLoading] = useState<boolean>(true)
     const [activeCtgr, setActiveCtgr] = useState<string>('')
     const [currentPage, setCurrentPage] = useState<number>(1)
-    const [filteredDishes, setFilteredDishes] = useState(dishes)
+    const [filteredDishes, setFilteredDishes] = useState<IDishe[]>(dishes)
     const [pages, setPages] = useState<number>(1)
 
     const changeActiveCtgr = (e:string) => {
@@ -38,17 +56,21 @@ const Catalog = () => {
     }
 
     useEffect(() => {
+        getDishes()
+    },[])
+
+    useEffect(() => {
         setPages(Math.ceil(filteredDishes.length/6))
         if(currentPage > pages) {
             setCurrentPage(1)
         }
     },[filteredDishes,currentPage,pages])
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (activeCtgr === '' || activeCtgr.toLowerCase() === 'all') {
             setFilteredDishes(dishes);
         } else {
-            setFilteredDishes(dishes.filter((e) => e.ctgrs.toLowerCase() === activeCtgr.toLowerCase()));
+            setFilteredDishes(dishes.filter((e:IDishe) => e.ctgrs.toLowerCase() === activeCtgr.toLowerCase()));
         }
     }, [dishes,activeCtgr]);
 
@@ -87,7 +109,7 @@ const Catalog = () => {
             <div className={`${styles.catalog} mr-auto ml-auto xs:mt-[30px] lg:mt-[60px] flex xs:gap-[15px] lg:gap-[40px] flex-wrap`} 
             >
                 {
-                    filteredDishes.slice(currentPage*6-6,currentPage*6).map((e) => (
+                    !isLoading&&filteredDishes.slice(currentPage*6-6,currentPage*6).map((e:IDishe) => (
                         <div key={e.id} className=" xs:max-w-[155px] lg:max-w-[330px] flex flex-col items-center bg-[rgb(208,204,199,0.1)] xs:rounded-[18px] lg:rounded-[70px] xs:px-[13px] xs:py-[10px] lg:p-[30px]">
                             <img src={e.img} className="w-full xs:h-[130px] lg:h-[270px]" alt="" />
                             <p className="xs:mt-[10px] lg:mt-[24px] text-center font-poppins xs:text-[14px] lg:text-[30px] xs:leading-[21px] lg:leading-[200%] font-[600] text-colorBd">{e.name}</p>
@@ -114,6 +136,7 @@ const Catalog = () => {
                         </div>
                     ))
                 }
+                {isLoading&&<img className="my-[80px] ml-auto mr-auto xs:w-[50px] xs:h-[50px] lg:w-[100px] lg:h-[100px] animate-spin" src="./img/profile/refresh.svg" alt="" />}
             </div>
             <div className="mr-auto ml-auto xs:mt-[25px] lg:mt-[88px] flex gap-[15px] max-w-[350px]">
                 <div 
@@ -126,9 +149,10 @@ const Catalog = () => {
                     Array(pages).fill(null).map((_,i) => (
                         <div key={i} 
                         onClick={() => setCurrentPage(i+1)}
-                        className="flex items-center cursor-pointer justify-center xs:w-[35px] lg:w-[55px] xs:h-[35px] lg:h-[55px] 
+                        className={`${i+1===currentPage?'bg-colorBd text-white':'bg-[rgb(255,138,0,0.1)] text-colorO'}
+                        flex items-center cursor-pointer justify-center xs:w-[35px] lg:w-[55px] xs:h-[35px] lg:h-[55px] 
                         font-poppins xs:text-[12px] lg:text-[16px] xs:leading-[20px] lg:leading-[200%] font-[600] 
-                        xs:rounded-[8px] lg:rounded-[15px] text-colorO bg-[rgb(255,138,0,0.1)]">
+                        xs:rounded-[8px] lg:rounded-[15px]`}>
                             {i+1}
                         </div>
                     ))
