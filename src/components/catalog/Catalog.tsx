@@ -52,7 +52,7 @@ const Catalog = () => {
     const addCart = (e:IDishe):void => {
         const newObj = {...e,quantity:1}
         dispatch(addToCart(newObj))
-        navigate('/order');
+        navigate('/Delizioso/order');
     }
 
     useEffect(() => {

@@ -6,15 +6,15 @@ import { db } from "../../firebase";
 import { useAppSelector } from "../../store/store";
 import { useDispatch } from "react-redux";
 import styles from './catalog.module.css'
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const OrderCatalog = () => {
 
     const dispatch = useDispatch()
 
     const ctgrs = useAppSelector(s => s.dishes.ctgrs)
-    const routes = useAppSelector(s => s.app.routes)
     const cart = useAppSelector(s => s.order.cart)
+    const navigate = useNavigate()
 
     const getDishes = async () => {
         try {
@@ -40,6 +40,9 @@ const OrderCatalog = () => {
     const [filteredDishes, setFilteredDishes] = useState<IDishe[]>(dishes)
     const [pages, setPages] = useState<number>(1)
 
+    const [voucherValue, setVoucherValue] = useState<number>(0)
+    const [voucherUsed, setVoucherUsed] = useState<string[]>([])
+
     const subTotalValue = cart.reduce((acc:number,dishe:IDishe) => acc+=(dishe.quantity??1)*dishe.price,0)
     const taxValue = cart.reduce((acc:number) => acc+=1.5,0)
 
@@ -58,8 +61,21 @@ const OrderCatalog = () => {
         const newObj = {...e,quantity:1}
         dispatch(addToCart(newObj))
     }
-    const checkVoucherCode = () => {
-
+    const checkVoucherCode = async () => {
+        const res = await getDoc(doc(db,'app','app'))
+        const code = voucherCode.toLowerCase()
+        if(res.data()?.voucherCodes.includes(code) && 
+        !voucherUsed.includes(code) &&
+        voucherUsed.length < 2){
+            setVoucherValue(num => num + 5)
+            setVoucherCode('')
+            setVoucherUsed(arr => [...arr,code])
+        }
+    }
+    const toCheckout = () => {
+        if(cart.length!==0){
+            navigate('/Delizioso/checkout')
+        }
     }
 
     useEffect(() => {
@@ -202,7 +218,7 @@ const OrderCatalog = () => {
                         <div className="flex gap-[20px] mt-[20px]">
                             <input className="w-full rounded-[15px] bg-[rgb(250,250,249)] p-[15px] outline-none
                             font-poppins xs:text-[14px] lg:text-[20px] font-[400] xs:leading-[21px] lg:leading-[30px] text-[rgb(8,117,196)]
-                            " type="text" onChange={(e) => setVoucherCode(e.target.value)} value={voucherCode}/>
+                            " type="text" onChange={(e) => setVoucherCode(e.target.value)} value={voucherCode.toUpperCase()}/>
                             <button onClick={checkVoucherCode}
                             className="w-full xs:min-w-[50px] lg:min-w-[60px] rounded-[15px] bg-[rgb(83,165,224)] xs:w-[50px] lg:w-[60px] xs:h-[50px] lg:h-[60px]
                             flex items-center justify-center">
@@ -221,17 +237,16 @@ const OrderCatalog = () => {
                         </div>
                         <div className="xs:mt-[10px] lg:mt-[15px] flex justify-between items-center">
                             <p className="font-poppins xs:text-[14px] lg:text-[25px] font-[600] xs:leading-[21px] lg:leading-[38px] text-black">Voucher</p>
-                            <p className="font-poppins xs:text-[14px] lg:text-[25px] font-[500] lg:leading-[200%] text-colorO">$5.0</p>
+                            <p className="font-poppins xs:text-[14px] lg:text-[25px] font-[500] lg:leading-[200%] text-colorO">${voucherValue.toFixed(1)}</p>
                         </div>
                         <div className="xs:mt-[25px] lg:mt-[15px] xs:mb-[30px] lg:mb-[20px] flex justify-between items-center">
                             <p className="font-poppins xs:text-[20px] lg:text-[25px] font-[600] xs:leading-[30px] lg:leading-[38px] text-black">Total</p>
-                            <p className="font-poppins xs:text-[20px] lg:text-[25px] font-[600] lg:leading-[200%] text-colorO">${(subTotalValue+taxValue).toFixed(2)}</p>
+                            <p className="font-poppins xs:text-[20px] lg:text-[25px] font-[600] lg:leading-[200%] text-colorO">${(subTotalValue+taxValue-voucherValue).toFixed(2)}</p>
                         </div>
-                        <Link to={routes.checkout}>
-                            <button className="w-full font-poppins rounded-[15px] bg-[rgb(63,198,110)] xs:py-[9px] lg:py-[5px] 
+                        <button onClick={toCheckout}
+                            className="w-full font-poppins rounded-[15px] bg-[rgb(63,198,110)] xs:py-[9px] lg:py-[5px] 
                             xs:px-[62px] lg:px-[80px]  xs:text-[16px] lg:text-[25px] font-[600] leading-[200%]
                             flex items-center justify-center text-white">Checkout</button>
-                        </Link>
                     </div>
                 </div>
             </div>

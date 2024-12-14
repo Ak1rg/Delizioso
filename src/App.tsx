@@ -15,6 +15,7 @@ import Profile from "./pages/Profile"
 import { useEffect, useState } from "react"
 import { closeReservation } from "./store/reducers/reservationReduce"
 import Order from "./pages/Order"
+import Checkout from "./pages/Checkout"
 // import { useEffect } from "react"
 // import Cookies from 'js-cookie';
 // import { setUser } from "./store/reducers/userReduce"
@@ -68,6 +69,7 @@ function App() {
         <Route path={routes.contact} element={<Contact/>}/>
         <Route path={routes.reservation} element={<Reservation/>}/>
         <Route path={routes.order} element={<Order/>}/>
+        <Route path={routes.checkout} element={<Checkout/>}/>
         <Route path={routes.signup} element={<Signup/>}/>
         <Route path={routes.profile} element={<Profile/>}/>
       </Routes>

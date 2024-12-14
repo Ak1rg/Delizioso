@@ -1,29 +1,33 @@
 import { useEffect, useState } from "react"
 import { useAppSelector } from "../store/store"
 import { useNavigate } from "react-router-dom"
-import { ITable } from "../types/user"
+import { IOrder, ITable } from "../types/user"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
+import OrderCom from "../components/profile/OrderCom"
 
 
 const Profile = () => {
 
     const userData = useAppSelector(s => s.user)
     const navigate = useNavigate()
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [showTables, setshowTables] = useState<boolean>(true)
+    const [showOrders, setshowOrders] = useState<boolean>(true)
     const [reservationArr, setReservationArr] = useState<ITable[]>(userData.books)
+    const [ordersArr, setOrdersArr] = useState<IOrder[]>(userData.orders)
     const [gettingData, setGettingData] = useState<boolean>(false)
 
-    const getReservation = async () => {
+    const getData = async () => {
         setGettingData(true)
         setReservationArr([])
+        setOrdersArr([])
         try {
             const res = await getDoc(doc(db,'users',`${userData.uid}`));
-            setReservationArr(res.data()?.books)
+            setReservationArr(res.data()?.books ?? [])
+            setOrdersArr(res.data()?.orders ?? [])
         } catch (error){
             console.error(error)
-            setReservationArr([])
         } finally {
             setGettingData(false)
         }
@@ -37,7 +41,7 @@ const Profile = () => {
             !userData.date &&
             !userData.uid
         ) {
-            navigate('/signup');
+            navigate('/Delizioso/signup');
         } else {
             setIsLoading(false)
         }
@@ -67,6 +71,26 @@ const Profile = () => {
         }
     }
 
+    const deleteOrder = async (id:number) => {
+        setGettingData(true)
+        setOrdersArr([])
+        try {
+            const docRef = doc(db,'users',`${userData.uid}`)
+            const res = await getDoc(docRef);
+            const books = res.data()?.orders
+            const updatedOrders = books.filter((e:IOrder) => e.id !== id)
+            await updateDoc(docRef,{
+                orders:updatedOrders
+            })
+            setReservationArr(updatedOrders)
+        } catch (error){
+            console.error(error)
+            setOrdersArr([])
+        } finally {
+            setGettingData(false)
+        }
+    }
+
     return (
         <>
             <section className="ml-auto mr-auto mt-[100px] max-w-[1170px] w-full px-[25px] flex flex-col items-center">
@@ -84,7 +108,7 @@ const Profile = () => {
             <section className="ml-auto mr-auto my-[100px] max-w-[1170px] w-full px-[25px] flex flex-col">
                 <div className="flex items-center justify-center gap-[40px]">
                     <h2 className="font-tinos text-center xs:text-[35px] lg:text-[60px] xs:leading-[115%] lg:leading-[88px] font-[700] text-colorBd">Your Reservation</h2>
-                    <img onClick={getReservation} className="cursor-pointer xs:w-[19px] xs:h-[19px] lg:w-[40px] lg:h-[40px]" src="./img/profile/refresh.svg" alt="" />
+                    <img onClick={getData} className="cursor-pointer xs:w-[19px] xs:h-[19px] lg:w-[40px] lg:h-[40px]" src="./img/profile/refresh.svg" alt="" />
                 </div>
                 <div className={`mt-[30px] flex gap-[36px] flex-wrap justify-center ${userData.books.length >3&&showTables&&'xs:max-h-[150px] lg:max-h-[190px] overflow-hidden'}`}>
                     {reservationArr.map((table:ITable) => (
@@ -99,6 +123,20 @@ const Profile = () => {
                 </div>
                 {userData.books.length > 3 && <h6 onClick={() => setshowTables(e=>!e)} className="mt-[10px] cursor-pointer text-right font-poppins xs:text-[14px] lg:text-[24px] font-[500] text-colorBd leading-[200%]">Show {showTables?'all':'less'}</h6>}
                 {userData.books.length==0&&gettingData===false&&<h3 className="font-tinos text-center xs:text-[25px] lg:text-[40px] xs:leading-[115%] lg:leading-[88px] font-[700] text-colorBd">You don't have reservation</h3>}
+                {gettingData&&<img className="my-[80px] ml-auto mr-auto xs:w-[50px] xs:h-[50px] lg:w-[100px] lg:h-[100px] animate-spin" src="./img/profile/refresh.svg" alt="" />}
+            </section>
+            <section className="ml-auto mr-auto my-[100px] max-w-[1170px] w-full px-[25px] flex flex-col">
+                <div className="flex items-center justify-center gap-[40px]">
+                    <h2 className="font-tinos text-center xs:text-[35px] lg:text-[60px] xs:leading-[115%] lg:leading-[88px] font-[700] text-colorBd">Your Orders</h2>
+                    <img onClick={getData} className="cursor-pointer xs:w-[19px] xs:h-[19px] lg:w-[40px] lg:h-[40px]" src="./img/profile/refresh.svg" alt="" />
+                </div>
+                <div className={`mt-[30px] flex gap-[36px] flex-wrap justify-center ${userData.orders.length >3&&showOrders&&'xs:max-h-[150px] lg:max-h-[190px] overflow-hidden'}`}>
+                    {ordersArr.map((order:IOrder) => (
+                        <OrderCom key={order.id} delete={deleteOrder} order={order}/>
+                    ))}
+                </div>
+                {userData.orders.length > 3 && <h6 onClick={() => setshowOrders(e=>!e)} className="mt-[10px] cursor-pointer text-right font-poppins xs:text-[14px] lg:text-[24px] font-[500] text-colorBd leading-[200%]">Show {showOrders?'all':'less'}</h6>}
+                {userData.orders.length==0&&gettingData===false&&<h3 className="font-tinos text-center xs:text-[25px] lg:text-[40px] xs:leading-[115%] lg:leading-[88px] font-[700] text-colorBd">You don't have orders</h3>}
                 {gettingData&&<img className="my-[80px] ml-auto mr-auto xs:w-[50px] xs:h-[50px] lg:w-[100px] lg:h-[100px] animate-spin" src="./img/profile/refresh.svg" alt="" />}
             </section>
         </>

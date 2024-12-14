@@ -9,6 +9,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase"
 import { setUser } from "../store/reducers/userReduce"
 import { Link, useNavigate } from "react-router-dom"
+import { IOrder } from "../types/user"
 // import Cookies from 'js-cookie';
 
 interface IForm {
@@ -27,6 +28,7 @@ interface IUserData {
         partySize:string 
         date:string
     }[]
+    orders?:IOrder[]
     token?:string
     uid:string 
     date:string
@@ -61,7 +63,7 @@ const Signup = () => {
         try {
             await setDoc(doc(db,"users",userData.uid),userData)
             dispatch(setUser(userData))
-            navigate('/profile')
+            navigate('/Delizioso/profile')
         } catch (error) {
             if (error instanceof FirebaseError) {
                 setErrorForm(`Error adding user: ${error.message}`)
@@ -101,6 +103,7 @@ const Signup = () => {
                     fullName:data.fullName,
                     email:user.email,
                     books:[],
+                    orders:[],
                     uid:user.uid,
                     date:getDate(),
                 })
@@ -109,7 +112,7 @@ const Signup = () => {
                 const userData = getDoc(doc(db,"users",userCredential.user.uid))
                 userData.then(data => {
                     dispatch(setUser({...data.data()}))
-                    navigate('/profile')
+                    navigate('/Delizioso/profile')
                 })
             }
             // if (check) {

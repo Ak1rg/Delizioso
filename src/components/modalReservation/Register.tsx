@@ -29,7 +29,7 @@ const Register = () => {
     const info = useSelector((state:IState) => state.reservation.reservationInfo)
     const errors = formState.errors
 
-    const onSubmitClick = async (data: IForm) => {
+    const onSubmitClick = () => {
         dispatch(changeModalReservation('done'))
         dispatch(changeModalReservationConfirm('confirm'))
     };

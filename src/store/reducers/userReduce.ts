@@ -3,6 +3,7 @@ import { IUser } from '../../types/user'
 
 const initialState: IUser = {
     books:[],
+    orders:[],
     fullName:null,
     email:null,
     uid:null,
@@ -22,6 +23,7 @@ export const userSlice = createSlice({
             state.date = null
             state.uid = null
             state.books = []
+            state.orders = []
         },
     },
 })

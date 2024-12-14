@@ -35,9 +35,12 @@ export const orderSlice = createSlice({
         removeFromCart:(state,action) => {
             state.cart = state.cart.filter(item => item.id !== action.payload);
         },
+        doCheckout:(state) => {
+            state.cart = []
+        }
     },
 })
 
-export const { addToCart,changeQuantity,removeFromCart } = orderSlice.actions
+export const { addToCart,changeQuantity,removeFromCart,doCheckout } = orderSlice.actions
 
 export default orderSlice.reducer
