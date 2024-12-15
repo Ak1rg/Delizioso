@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import { IState } from "../../store/store"
+import { IState, useAppSelector } from "../../store/store"
 import PhoneInput from "./PhoneInput"
 import ModalSelect from "./modalSelect"
 import { changeModalReservation, changeModalReservationConfirm } from "../../store/reducers/reservationReduce"
+import { changeMailState } from "../../store/reducers/appReduce"
+import axios from "axios"
 
 
 interface IForm {
@@ -19,7 +21,7 @@ interface IForm {
 const Register = () => {
 
     const dispatch = useDispatch()
-
+    
     const [check, setcheck] = useState(false)
 
     const {register,handleSubmit,formState,watch} = useForm<IForm>({
@@ -27,11 +29,29 @@ const Register = () => {
     })  
 
     const info = useSelector((state:IState) => state.reservation.reservationInfo)
+    const mailState = useAppSelector(s => s.app.mailState)
     const errors = formState.errors
 
-    const onSubmitClick = () => {
-        dispatch(changeModalReservation('done'))
-        dispatch(changeModalReservationConfirm('confirm'))
+    const onSubmitClick = async (data:IForm) => {
+        dispatch(changeMailState('loading'))
+        try {
+            await axios.post('/Delizioso/api/send-email', {
+                name: `${data.firstName} ${data.lastName}`,
+                email: data.email,
+                subject: data.number,
+                message: data.request,
+            });
+            dispatch(changeMailState('success'))
+        } catch (error) {
+            console.error(error);
+            dispatch(changeMailState('failed'))
+        } finally {
+            setTimeout(() => {
+                dispatch(changeMailState(null))
+            }, 3000);
+            dispatch(changeModalReservation('done'))
+            dispatch(changeModalReservationConfirm('confirm'))
+        }
     };
 
     return (
@@ -119,9 +139,9 @@ const Register = () => {
                         </div>
                         <button
                             type="submit"
-                            className="xs:mt-[40px] lg:mt-[60px] xs:rounded-[10px] lg:rounded-[20px] w-full
+                            className={`${mailState==='loading'&&'select-none'} xs:mt-[40px] lg:mt-[60px] xs:rounded-[10px] lg:rounded-[20px] w-full
                             xs:py-[21px] lg:py-[36px] xs:text-[15px] lg:text-[25px] 
-                            font-[400] font-poppins leading-[110%] text-white bg-[#FF8A00] cursor-pointer"
+                            font-[400] font-poppins leading-[110%] text-white bg-[#FF8A00] cursor-pointer`}
                         >Confirm reservation</button>
                     </form>
                     <div className="xs:min-w-[250px] lg:min-w-[430px] max-w-[430px] flex flex-col items-center">

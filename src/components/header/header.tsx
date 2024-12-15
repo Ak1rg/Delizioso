@@ -1,17 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link} from "react-router-dom";
 import { changeBurger, } from "../../store/reducers/appReduce";
-import { IState } from "../../store/store";
+import { useAppSelector } from "../../store/store";
 
 import classes from './header.module.scss'
 
 export default function Header() {
 
-    const burgerValue = useSelector((state:IState) => state.app.burger)
-    const routes = useSelector((state:IState) => state.app.routes)
+    const burgerValue = useAppSelector(s => s.app.burger)
+    const routes = useAppSelector(s => s.app.routes)
+    const userData = useAppSelector(s => s.user)
+    const cartValue = useAppSelector(s => s.order.cart)
 
     const dispatch = useDispatch()
-
 
     const closeBurger = () => {
         dispatch(changeBurger(false))
@@ -31,13 +32,24 @@ export default function Header() {
                 <Link to={routes.contact}>Contact us</Link>
             </div>
             <div className={classes.cart}>
-                <div className="cart_back">
-                    <img src="./img/header/cart.svg" alt="" />
-                    <div className="cart_back_count">3</div>
-                </div>
-                <Link to={routes.signup}>
-                    <button>Log in</button>
-                </Link>
+                {userData.uid!==null&&
+                    <Link to={routes.order}>
+                        <div className="cart_back cursor-pointer">
+                            <img src="./img/header/cart.svg" alt="" />
+                            {cartValue.length>0&&<div className="cart_back_count">{cartValue.length}</div>}
+                        </div>
+                    </Link>
+                }
+                {userData.uid===null&&
+                    <Link to={routes.signup}>
+                        <button>Log in</button>
+                    </Link>
+                }
+                {userData.uid!==null&&
+                    <Link to={routes.profile}>
+                        <img className="cursor-pointer w-[40px] h-[40px] rounded-full" src="./img/profile/profile.png" alt="" />
+                    </Link>
+                }
                 <div className="ham">
                     <img src="./img/header/burger_logo.svg" alt="" onClick={() => dispatch(changeBurger(true))}/>
                 </div>

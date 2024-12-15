@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { useEffect, useState } from "react"
-import { IState } from "../../store/store"
+import {  useAppSelector } from "../../store/store"
 import styles from './catalog.module.css'
 import { IDishe } from "../../types/dishes"
 import { useNavigate } from "react-router-dom"
@@ -13,7 +13,8 @@ const Catalog = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const ctgrs = useSelector((store:IState) => store.dishes.ctgrs)
+    const ctgrs = useAppSelector(s => s.dishes.ctgrs)
+    const routes = useAppSelector(s => s.app.routes)
 
     const getDishes = async () => {
         try {
@@ -52,7 +53,7 @@ const Catalog = () => {
     const addCart = (e:IDishe):void => {
         const newObj = {...e,quantity:1}
         dispatch(addToCart(newObj))
-        navigate('/Delizioso/order');
+        navigate(routes.order);
     }
 
     useEffect(() => {

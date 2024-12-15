@@ -9,6 +9,7 @@ import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { IUser } from '../types/user';
 import userSlice from './reducers/userReduce';
 import orderSlice from './reducers/orderReduce';
+import { useDispatch } from 'react-redux';
 
 export interface IState{
     app:IAppState
@@ -29,5 +30,6 @@ export const store = configureStore({
 
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch

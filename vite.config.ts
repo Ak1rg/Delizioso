@@ -9,4 +9,13 @@ export default defineConfig({
       generateScopedName: '[local]_[hash:base64:5]', 
     },
   },
+  server: {
+    proxy: {
+      '/Delizioso/api': {
+        target: 'http://localhost:5000', 
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })

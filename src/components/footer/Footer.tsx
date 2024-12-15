@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom"
+import { useAppSelector } from "../../store/store"
+
 const Footer = () => {
 
+    const routes = useAppSelector(s => s.app.routes)
+
     const cols = [
-        {
-            title:'Page',
-            words:['Home','Menu','Order online','Catering','Reservation',]
-        },
         {
             title:'Information',
             words:['About us','Testimonial','Event']
@@ -25,6 +26,16 @@ const Footer = () => {
                         <img src="./img/footer/twitter.svg" alt="" />
                         <img src="./img/footer/instagram.svg" alt="" />
                         <img src="./img/footer/facebook.svg" alt="" />
+                    </div>
+                </div>
+                <div className='flex flex-col gap-[25px] xs:w-[100%] md:w-1/2 xl:w-auto xs:mt-[30px]'>
+                    <h3 className='text-[#FF8A00] xs:text-[18px] md:text-[25px] leading-[50px] font-poppins font-[600]'>Pages</h3>
+                    <div className='flex flex-col gap-[15px]'>
+                        <Link to={routes.home}><h4 className='text-[#E3E2E0] xs:text-[14px] md:text-[20px] leading-[30px] font-[400] max-w-[280px] cursor-pointer'>Home</h4></Link>
+                        <Link to={routes.menu}><h4 className='text-[#E3E2E0] xs:text-[14px] md:text-[20px] leading-[30px] font-[400] max-w-[280px] cursor-pointer'>Menu</h4></Link>
+                        <Link to={routes.order}><h4 className='text-[#E3E2E0] xs:text-[14px] md:text-[20px] leading-[30px] font-[400] max-w-[280px] cursor-pointer'>Order Online</h4></Link>
+                        <Link to={routes.about}><h4 className='text-[#E3E2E0] xs:text-[14px] md:text-[20px] leading-[30px] font-[400] max-w-[280px] cursor-pointer'>Catering</h4></Link>
+                        <Link to={routes.reservation}><h4 className='text-[#E3E2E0] xs:text-[14px] md:text-[20px] leading-[30px] font-[400] max-w-[280px] cursor-pointer'>Reservation</h4></Link>
                     </div>
                 </div>
                 {

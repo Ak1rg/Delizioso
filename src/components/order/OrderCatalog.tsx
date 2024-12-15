@@ -14,6 +14,7 @@ const OrderCatalog = () => {
 
     const ctgrs = useAppSelector(s => s.dishes.ctgrs)
     const cart = useAppSelector(s => s.order.cart)
+    const routes = useAppSelector(s => s.app.routes)
     const navigate = useNavigate()
 
     const getDishes = async () => {
@@ -74,7 +75,7 @@ const OrderCatalog = () => {
     }
     const toCheckout = () => {
         if(cart.length!==0){
-            navigate('/Delizioso/checkout')
+            navigate(routes.checkout)
         }
     }
 

@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-server.post('/send-email', (req, res) => {
+server.post('/Delizioso/api/send-email', (req, res) => {
   const { name, email, subject , message } = req.body;
   if (!name || !email || !subject || !message) {
     return res.status(400).send('All fields are required');
@@ -28,7 +28,7 @@ server.post('/send-email', (req, res) => {
     subject: `Message from ${name} Subject:${subject}`,
     text: `Email: ${email}\n\nMessage:\n${message}`,
   };
-  transporter.sendMail(mailOptions, (error, info) => {
+  transporter.sendMail(mailOptions, (error) => {
     if (error) {
       console.error(error);
       return res.status(500).send('Failed to send email');

@@ -39,12 +39,14 @@ const Signup = () => {
     const auth = getAuth();
     const showValue = useAppSelector(s => s.app.signup)
     const routes = useAppSelector(s => s.app.routes)
+    const userData = useAppSelector(s => s.user)
     const changeValue = (e:string) => {
         dispatch(changeSignup(e))
     }
 
-    const [check, setCheck] = useState(false)
-    const [errorForm, setErrorForm] = useState('')
+    const [check, setCheck] = useState<boolean>(false)
+    const [errorForm, setErrorForm] = useState<string>('')
+    const [isSignuped, setisSignuped] = useState<boolean>(true)
     const navigate = useNavigate()
 
     const {register,handleSubmit,formState,reset} = useForm<IForm>({
@@ -63,7 +65,7 @@ const Signup = () => {
         try {
             await setDoc(doc(db,"users",userData.uid),userData)
             dispatch(setUser(userData))
-            navigate('/Delizioso/profile')
+            navigate(routes.profile)
         } catch (error) {
             if (error instanceof FirebaseError) {
                 setErrorForm(`Error adding user: ${error.message}`)
@@ -112,7 +114,7 @@ const Signup = () => {
                 const userData = getDoc(doc(db,"users",userCredential.user.uid))
                 userData.then(data => {
                     dispatch(setUser({...data.data()}))
-                    navigate('/Delizioso/profile')
+                    navigate(routes.profile)
                 })
             }
             // if (check) {
@@ -130,6 +132,23 @@ const Signup = () => {
     useEffect(() => {
         reset()
     },[showValue,reset])
+
+    useEffect(() => {
+        if (
+            userData.fullName &&
+            userData.email &&
+            userData.date &&
+            userData.uid
+        ) {
+            navigate(routes.profile);
+        } else {
+            setisSignuped(false)
+        }
+    },[navigate,routes.profile,userData])
+
+    if (isSignuped) {
+        return null; 
+    }
 
     return (
         <div className="flex">

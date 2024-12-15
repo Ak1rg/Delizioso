@@ -7,6 +7,7 @@ export interface IUser {
     date:string | null
     books:ITable[]
     orders:IOrder[]
+    gettingData:boolean
 }
 
 export interface ITable {

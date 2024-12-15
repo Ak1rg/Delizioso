@@ -2,6 +2,7 @@ import axios from "axios"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { changeMailState } from "../store/reducers/appReduce"
+import { useAppSelector } from "../store/store"
 
 interface IForm {
     firstName:string
@@ -14,6 +15,7 @@ interface IForm {
 const Contact = () => {
 
     const dispatch = useDispatch()
+    const mailState = useAppSelector(s => s.app.mailState)
 
     const {register,handleSubmit,formState} = useForm<IForm>({
         mode:'onChange'
@@ -24,7 +26,7 @@ const Contact = () => {
     const onSubmitClick = async (data: IForm) => {
         dispatch(changeMailState('loading'))
         try {
-            await axios.post('http://localhost:5000/send-email', {
+            await axios.post('/Delizioso/api/send-email', {
                 name: `${data.firstName} ${data.lastName}`,
                 email: data.email,
                 subject: data.subject,
@@ -132,9 +134,9 @@ const Contact = () => {
                     />
                     <button
                         type="submit"
-                        className="xs:mt-[40px] lg:mt-[100px] ml-auto mr-auto rounded-[20px] w-full
+                        className={`${mailState==='loading'&&'select-none'} xs:mt-[40px] lg:mt-[100px] ml-auto mr-auto rounded-[20px] w-full
                         xs:max-w-[300px] lg:max-w-[540px] lg:w-[540px] lg:px-[225px] xs:py-[17px] lg:py-[36px] xs:text-[15px] lg:text-[25px] 
-                        font-[400] font-poppins leading-[110%] text-white bg-[#FF8A00] cursor-pointer"
+                        font-[400] font-poppins leading-[110%] text-white bg-[#FF8A00] cursor-pointer`}
                     >
                         Submit
                     </button>

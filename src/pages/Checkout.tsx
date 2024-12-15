@@ -8,6 +8,8 @@ import { doCheckout } from "../store/reducers/orderReduce"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import { IOrder } from "../types/user"
+import { changeMailState } from "../store/reducers/appReduce"
+import axios from "axios"
 
 interface IForm {
     firstName:string
@@ -21,6 +23,7 @@ const Checkout = () => {
 
     const cart = useAppSelector(s => s.order.cart)
     const routes = useAppSelector(s => s.app.routes)
+    const mailState = useAppSelector(s => s.app.mailState)
     const userData = useAppSelector(s => s.user)
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -35,35 +38,57 @@ const Checkout = () => {
     const errors = formState.errors
 
     const onSubmitClick = async (data: IForm) => {
-        try {
-            if(cart.length!==0){
-                if(userData.uid!==null){
-                    const docRef = doc(db,'users',`${userData.uid}`)
-                    const res = await getDoc(docRef);
-                    const orders = res.data()?.orders
-                    const updatedOrder = [...orders,{
-                        dishes:cart,
-                        id:(() => {
-                            let uniqueNumber:number 
-                            do{
-                                uniqueNumber = Math.floor(100000 + Math.random() * 900000);
-                            } while (orders.some((order:IOrder) => order.id === uniqueNumber))
-                            return uniqueNumber;
-                        })(),
-                        note:data.note,
-                        email:data.email,
-                        orderMethod:deliveryValue,
-                    }]
-                    await updateDoc(docRef,{
-                        orders:updatedOrder
-                    })
-                    dispatch(doCheckout())
+        if(userData.uid!==null){
+            try {
+                if(cart.length!==0){
+                    if(userData.uid!==null){
+                        const docRef = doc(db,'users',`${userData.uid}`)
+                        const res = await getDoc(docRef);
+                        const orders = res.data()?.orders
+                        const updatedOrder = [...orders,{
+                            dishes:cart,
+                            id:(() => {
+                                let uniqueNumber:number 
+                                do{
+                                    uniqueNumber = Math.floor(100000 + Math.random() * 900000);
+                                } while (orders.some((order:IOrder) => order.id === uniqueNumber))
+                                return uniqueNumber;
+                            })(),
+                            note:data.note,
+                            email:data.email,
+                            orderMethod:deliveryValue,
+                        }]
+                        await updateDoc(docRef,{
+                            orders:updatedOrder
+                        })
+                        dispatch(doCheckout())
+                    }
                 }
+            } catch (error) {
+                console.error(error);
+            } finally{
+                navigate(routes.order)
             }
-        } catch (error) {
-            console.error(error);
+        } else {
+            dispatch(changeMailState('loading'))
+            try {
+                await axios.post('/Delizioso/api/send-email', {
+                    name: `${data.firstName} ${data.lastName}`,
+                    email: data.email,
+                    subject: data.phone,
+                    message: data.note,
+                });
+                dispatch(changeMailState('success'))
+            } catch (error) {
+                console.error(error);
+                dispatch(changeMailState('failed'))
+            } finally {
+                setTimeout(() => {
+                    dispatch(changeMailState(null))
+                }, 3000);
+                navigate(routes.order)
+            }
         }
-        navigate('/Delizioso/order')
     };
 
     return (
@@ -192,9 +217,9 @@ const Checkout = () => {
             <section className="ml-auto mr-auto mb-[50px] max-w-[1170px] w-full px-[25px] flex flex-col">
                 <button
                     onClick={handleSubmit(onSubmitClick)}
-                    className="xs:mt-[40px] lg:mt-[50px] ml-auto mr-auto w-full rounded-[20px] xs:max-w-[300px] 
+                    className={`${mailState==='loading'&&'select-none'} xs:mt-[40px] lg:mt-[50px] ml-auto mr-auto w-full rounded-[20px] xs:max-w-[300px] 
                     lg:max-w-[540px] flex justify-center xs:py-[17px] lg:py-[36px] xs:text-[15px] lg:text-[25px] 
-                    font-[400] font-poppins leading-[110%] text-white bg-[#FF8A00] cursor-pointer"
+                    font-[400] font-poppins leading-[110%] text-white bg-[#FF8A00] cursor-pointer`}
                 >
                     Order now
                 </button>

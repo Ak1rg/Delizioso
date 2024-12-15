@@ -1,36 +1,33 @@
 import { useEffect, useState } from "react"
-import { useAppSelector } from "../store/store"
+import { useAppDispatch, useAppSelector } from "../store/store"
 import { useNavigate } from "react-router-dom"
 import { IOrder, ITable } from "../types/user"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import OrderCom from "../components/profile/OrderCom"
+import { getUser, removeUser } from "../store/reducers/userReduce"
 
 
 const Profile = () => {
 
     const userData = useAppSelector(s => s.user)
+    const routes = useAppSelector(s => s.app.routes)
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
     const [isLoading, setIsLoading] = useState(false);
     const [showTables, setshowTables] = useState<boolean>(true)
     const [showOrders, setshowOrders] = useState<boolean>(true)
-    const [reservationArr, setReservationArr] = useState<ITable[]>(userData.books)
-    const [ordersArr, setOrdersArr] = useState<IOrder[]>(userData.orders)
-    const [gettingData, setGettingData] = useState<boolean>(false)
 
     const getData = async () => {
-        setGettingData(true)
-        setReservationArr([])
-        setOrdersArr([])
         try {
-            const res = await getDoc(doc(db,'users',`${userData.uid}`));
-            setReservationArr(res.data()?.books ?? [])
-            setOrdersArr(res.data()?.orders ?? [])
+            dispatch(getUser(String(userData.uid)));
         } catch (error){
             console.error(error)
-        } finally {
-            setGettingData(false)
-        }
+        } 
+    }
+    const logout = () => {
+        dispatch(removeUser())
+        navigate(routes.home)
     }
 
     useEffect(() => {
@@ -41,19 +38,17 @@ const Profile = () => {
             !userData.date &&
             !userData.uid
         ) {
-            navigate('/Delizioso/signup');
+            navigate(routes.signup);
         } else {
             setIsLoading(false)
         }
-    },[userData, navigate])
+    },[userData, navigate,routes.signup])
 
     if (isLoading) {
         return null; 
     }
 
     const deleteReservation = async (id:number) => {
-        setGettingData(true)
-        setReservationArr([])
         try {
             const docRef = doc(db,'users',`${userData.uid}`)
             const res = await getDoc(docRef);
@@ -62,18 +57,12 @@ const Profile = () => {
             await updateDoc(docRef,{
                 books:updatedBooks
             })
-            setReservationArr(updatedBooks)
+            getData()
         } catch (error){
             console.error(error)
-            setReservationArr([])
-        } finally {
-            setGettingData(false)
-        }
+        } 
     }
-
     const deleteOrder = async (id:number) => {
-        setGettingData(true)
-        setOrdersArr([])
         try {
             const docRef = doc(db,'users',`${userData.uid}`)
             const res = await getDoc(docRef);
@@ -82,12 +71,9 @@ const Profile = () => {
             await updateDoc(docRef,{
                 orders:updatedOrders
             })
-            setReservationArr(updatedOrders)
+            getData()
         } catch (error){
             console.error(error)
-            setOrdersArr([])
-        } finally {
-            setGettingData(false)
         }
     }
 
@@ -103,6 +89,7 @@ const Profile = () => {
                 <div className="mt-[50px] flex xs:flex-col lg:flex-row xs:gap-[10px] lg:gap-[50px]">
                     <p className="font-poppins xs:text-[12px] lg:text-[20px] font-[400] text-colorBd leading-[200%]">Email: {userData.email}</p>
                     <p className="font-poppins xs:text-[12px] lg:text-[20px] font-[400] text-colorBd leading-[200%]">Date registration: {userData.date}</p>
+                    <button onClick={logout} className="font-poppins xs:text-[12px] lg:text-[20px] font-[400] text-[red] leading-[200%]">Log out</button>
                 </div>
             </section>
             <section className="ml-auto mr-auto my-[100px] max-w-[1170px] w-full px-[25px] flex flex-col">
@@ -111,7 +98,7 @@ const Profile = () => {
                     <img onClick={getData} className="cursor-pointer xs:w-[19px] xs:h-[19px] lg:w-[40px] lg:h-[40px]" src="./img/profile/refresh.svg" alt="" />
                 </div>
                 <div className={`mt-[30px] flex gap-[36px] flex-wrap justify-center ${userData.books.length >3&&showTables&&'xs:max-h-[150px] lg:max-h-[190px] overflow-hidden'}`}>
-                    {reservationArr.map((table:ITable) => (
+                    {userData.gettingData===false&&userData.books.map((table:ITable) => (
                         <div key={table.id} className="relative bg-[rgb(208,204,199)] bg-opacity-10 rounded-[20px] border-solid border-colorBd border-[1px] px-[20px] py-[10px]">
                             <h6 className="font-poppins xs:text-[14px] lg:text-[24px] font-[500] text-colorBd leading-[200%]">Reservation table: {table.id}</h6>
                             <p className="font-poppins xs:text-[12px] lg:text-[20px] font-[500] text-colorBd leading-[200%]">Time: {table.Time}</p>
@@ -122,8 +109,8 @@ const Profile = () => {
                     ))}
                 </div>
                 {userData.books.length > 3 && <h6 onClick={() => setshowTables(e=>!e)} className="mt-[10px] cursor-pointer text-right font-poppins xs:text-[14px] lg:text-[24px] font-[500] text-colorBd leading-[200%]">Show {showTables?'all':'less'}</h6>}
-                {userData.books.length==0&&gettingData===false&&<h3 className="font-tinos text-center xs:text-[25px] lg:text-[40px] xs:leading-[115%] lg:leading-[88px] font-[700] text-colorBd">You don't have reservation</h3>}
-                {gettingData&&<img className="my-[80px] ml-auto mr-auto xs:w-[50px] xs:h-[50px] lg:w-[100px] lg:h-[100px] animate-spin" src="./img/profile/refresh.svg" alt="" />}
+                {userData.books.length==0&&userData.gettingData===false&&<h3 className="font-tinos text-center xs:text-[25px] lg:text-[40px] xs:leading-[115%] lg:leading-[88px] font-[700] text-colorBd">You don't have reservation</h3>}
+                {userData.gettingData&&<img className="my-[80px] ml-auto mr-auto xs:w-[50px] xs:h-[50px] lg:w-[100px] lg:h-[100px] animate-spin" src="./img/profile/refresh.svg" alt="" />}
             </section>
             <section className="ml-auto mr-auto my-[100px] max-w-[1170px] w-full px-[25px] flex flex-col">
                 <div className="flex items-center justify-center gap-[40px]">
@@ -131,13 +118,13 @@ const Profile = () => {
                     <img onClick={getData} className="cursor-pointer xs:w-[19px] xs:h-[19px] lg:w-[40px] lg:h-[40px]" src="./img/profile/refresh.svg" alt="" />
                 </div>
                 <div className={`mt-[30px] flex gap-[36px] flex-wrap justify-center ${userData.orders.length >3&&showOrders&&'xs:max-h-[150px] lg:max-h-[190px] overflow-hidden'}`}>
-                    {ordersArr.map((order:IOrder) => (
+                    {userData.gettingData===false&&userData.orders.map((order:IOrder) => (
                         <OrderCom key={order.id} delete={deleteOrder} order={order}/>
                     ))}
                 </div>
                 {userData.orders.length > 3 && <h6 onClick={() => setshowOrders(e=>!e)} className="mt-[10px] cursor-pointer text-right font-poppins xs:text-[14px] lg:text-[24px] font-[500] text-colorBd leading-[200%]">Show {showOrders?'all':'less'}</h6>}
-                {userData.orders.length==0&&gettingData===false&&<h3 className="font-tinos text-center xs:text-[25px] lg:text-[40px] xs:leading-[115%] lg:leading-[88px] font-[700] text-colorBd">You don't have orders</h3>}
-                {gettingData&&<img className="my-[80px] ml-auto mr-auto xs:w-[50px] xs:h-[50px] lg:w-[100px] lg:h-[100px] animate-spin" src="./img/profile/refresh.svg" alt="" />}
+                {userData.orders.length==0&&userData.gettingData===false&&<h3 className="font-tinos text-center xs:text-[25px] lg:text-[40px] xs:leading-[115%] lg:leading-[88px] font-[700] text-colorBd">You don't have orders</h3>}
+                {userData.gettingData&&<img className="my-[80px] ml-auto mr-auto xs:w-[50px] xs:h-[50px] lg:w-[100px] lg:h-[100px] animate-spin" src="./img/profile/refresh.svg" alt="" />}
             </section>
         </>
     )
