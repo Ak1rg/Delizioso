@@ -25,9 +25,15 @@ const Profile = () => {
             console.error(error)
         } 
     }
-    const logout = () => {
-        dispatch(removeUser())
-        navigate(routes.home)
+    const logout = async () => {
+        const response = await fetch('/Delizioso/api/logout', {
+            method: 'POST',
+            credentials: 'include',
+        });
+        if (response.ok){
+            dispatch(removeUser())
+            navigate(routes.home)
+        }
     }
 
     useEffect(() => {

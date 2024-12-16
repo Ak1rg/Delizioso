@@ -3,13 +3,15 @@ import { changeSignup } from "../store/reducers/appReduce"
 import { useAppSelector } from "../store/store"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from "react"
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { FirebaseError } from "firebase/app"
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase"
 import { setUser } from "../store/reducers/userReduce"
 import { Link, useNavigate } from "react-router-dom"
 import { IOrder } from "../types/user"
+import { GoogleAuthProvider } from 'firebase/auth';
+import axios from "axios"
 // import Cookies from 'js-cookie';
 
 interface IForm {
@@ -48,6 +50,7 @@ const Signup = () => {
     const [errorForm, setErrorForm] = useState<string>('')
     const [isSignuped, setisSignuped] = useState<boolean>(true)
     const navigate = useNavigate()
+    const provider = new GoogleAuthProvider();
 
     const {register,handleSubmit,formState,reset} = useForm<IForm>({
         mode:'onChange'
@@ -109,6 +112,15 @@ const Signup = () => {
                     uid:user.uid,
                     date:getDate(),
                 })
+                if (check) {
+                    const idToken = await userCredential.user.getIdToken();
+                    await axios.post('/Delizioso/api/login', {
+                        idToken,
+                    }, {
+                        headers: { 'Content-Type': 'application/json' }, 
+                        withCredentials: true, 
+                    });
+                }
             } else if(showValue === 'login') {
                 userCredential = await signInWithEmailAndPassword(auth, data.email, data.password)
                 const userData = getDoc(doc(db,"users",userCredential.user.uid))
@@ -116,10 +128,16 @@ const Signup = () => {
                     dispatch(setUser({...data.data()}))
                     navigate(routes.profile)
                 })
+                if (check) {
+                    const idToken = await userCredential.user.getIdToken();
+                    await axios.post('/Delizioso/api/login', {
+                        idToken,
+                    }, {
+                        headers: { 'Content-Type': 'application/json' }, 
+                        withCredentials: true, 
+                    });
+                }
             }
-            // if (check) {
-            //     Cookies.set('firebaseToken',await getToken(), { secure: true, sameSite: 'Strict', expires: 365 });
-            // }
         } catch (error) {
             if (error instanceof FirebaseError) {
                 setErrorForm(getErrorMessage(error.code))
@@ -128,6 +146,46 @@ const Signup = () => {
             }
         }
     };
+
+    const googleSingup = () => {
+        signInWithPopup(auth, provider)
+            .then(async (result) => {
+                const user = result.user;
+                if(showValue === 'signup'){
+                    if (!user.email || !user.displayName) {
+                        throw new Error("User email is null or undefined.");
+                    }
+                    addUser({
+                        fullName:user.displayName,
+                        email:user.email,
+                        books:[],
+                        orders:[],
+                        uid:user.uid,
+                        date:getDate(),
+                    })
+                    navigate(routes.profile)
+                } else if (showValue === 'login') {
+                    if (!user.email || !user.displayName) {
+                        throw new Error("User email is null or undefined.");
+                    }
+                    const userData = getDoc(doc(db,"users",user.uid))
+                    userData.then(data => {
+                        dispatch(setUser({...data.data()}))
+                        navigate(routes.profile)
+                    })
+                }
+                const idToken = await result.user.getIdToken();
+                await axios.post('/Delizioso/api/login', {
+                    idToken,
+                }, {
+                    headers: { 'Content-Type': 'application/json' }, 
+                    withCredentials: true, 
+                });
+            })
+            .catch((error) => {
+                console.error('Error during sign-in:', error.message);
+            });
+    }
 
     useEffect(() => {
         reset()
@@ -232,6 +290,7 @@ const Signup = () => {
                     </button>
                 </form>
                 <button
+                    onClick={googleSingup}
                     className="mt-[30px] ml-auto mr-auto rounded-[10px]
                     max-w-[415px] w-full flex items-center justify-center py-[18px] gap-[15px]
                     font-[500] font-poppins leading-[21px] text-colorBd bg-white cursor-pointer

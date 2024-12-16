@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom"
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import Footer from "./components/footer/Footer"
 import Header from "./components/header/header"
 import Home from "./pages/Home"
@@ -16,47 +16,55 @@ import { useEffect, useState } from "react"
 import { closeReservation } from "./store/reducers/reservationReduce"
 import Order from "./pages/Order"
 import Checkout from "./pages/Checkout"
-// import { useEffect } from "react"
-// import Cookies from 'js-cookie';
-// import { setUser } from "./store/reducers/userReduce"
-// import { doc, getDoc } from "firebase/firestore"
-// import { db } from "./firebase"
-// import { getAuth, signInWithCustomToken } from "firebase/auth"
+import axios from "axios"
+import { setUser } from "./store/reducers/userReduce"
+import { doc, getDoc } from "firebase/firestore"
+import { db } from "./firebase"
 
 function App() {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [previousPath, setPreviousPath] = useState<string>('')
   const routes = useSelector((state:IState) => state.app.routes)
   const location = useLocation();
   const hideHeaderFooter = location.pathname === routes.signup;
 
-
-  // const getUser = async () => {
-  //   const firebaseToken = Cookies.get('firebaseToken');
-  //   if(firebaseToken){
-  //     const auth = getAuth();
-  //     signInWithCustomToken(auth,firebaseToken)
-  //       .then((userCredential) => {
-  //         const user = userCredential.user;
-  //         console.log(user)
-  //       })
-  //       .catch((error) => {
-  //         console.error(error)
-  //       });
-  //   }
-  // }
-
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const sessionCookie = document.cookie.includes('session');
+        if (!sessionCookie) {
+          return; 
+        }
+        const response = await axios.get('/Delizioso/api/check-session', {
+          withCredentials: true, 
+        });
+        if (response.status === 200) {
+          const user = response.data.user;
+          const userData = await getDoc(doc(db, "users", user.uid));
+          dispatch(setUser({ ...userData.data() }));
+        }
+        if (location.pathname === routes.signup) {
+          navigate(routes.profile);
+        }
+      } catch (error) {
+        console.error('No valid session or error occurred:', error);
+      }
+    };
+  
+    checkSession();
+  }, []);
 
     useEffect(() => {
         const handleRouteChange = () => {
-            if (previousPath === "/reservation" && location.pathname !== "/reservation") {
+            if (previousPath === routes.reservation && location.pathname !== routes.reservation) {
                 dispatch(closeReservation())
             }
             setPreviousPath(location.pathname)
         };
         handleRouteChange();
-    }, [previousPath,location,dispatch]);
+    }, [previousPath,location,dispatch,routes]);
 
 
   return (

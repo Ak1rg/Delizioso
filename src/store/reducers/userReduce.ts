@@ -30,17 +30,17 @@ export const userSlice = createSlice({
         },
     },
     extraReducers(builder) {
-        builder.
-            addCase(getUser.pending,(state) => {
-                state.gettingData = true
+        builder
+            .addCase(getUser.pending, (state) => {
+                state.gettingData = true;
             })
-            .addCase(getUser.fulfilled,(state,action) => {
-                return {...state,...action.payload,gettingData:false}
+            .addCase(getUser.fulfilled, (state, action) => {
+                return { ...state, ...action.payload, gettingData: false };
             })
-            .addCase(getUser.rejected,(state) => {
-                state.gettingData = false
+            .addCase(getUser.rejected, (state) => {
+                state.gettingData = false;
             })
-    },
+    }
 })
 
 export const getUser = createAsyncThunk<IUser, string, { rejectValue: string }>(
@@ -65,6 +65,7 @@ export const getUser = createAsyncThunk<IUser, string, { rejectValue: string }>(
         }
     }
 );
+
 
 export const { setUser,removeUser } = userSlice.actions
 
