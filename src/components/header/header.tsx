@@ -47,7 +47,7 @@ export default function Header() {
                 }
                 {userData.uid!==null&&
                     <Link to={routes.profile}>
-                        <img className="cursor-pointer w-[40px] h-[40px] rounded-full" src="./img/profile/profile.png" alt="" />
+                        <img className="xs:hidden lg:flex cursor-pointer w-[40px] h-[40px] rounded-full" src="./img/profile/profile.png" alt="" />
                     </Link>
                 }
                 <div className="ham">
@@ -62,7 +62,9 @@ export default function Header() {
                     <Link to={routes.order} className={classes.link} onClick={closeBurger}>Order online</Link>
                     <Link to={routes.reservation} className={classes.link} onClick={closeBurger}>Reservation</Link>
                     <Link to={routes.contact} className={classes.link} onClick={closeBurger}>Contact us</Link>
-                    <button className={classes.button}>Log in</button>
+                    {userData.uid===null?
+                    <Link to={routes.signup} className={classes.button} onClick={closeBurger}>Log in</Link>:
+                    <Link to={routes.signup} className={classes.link} onClick={closeBurger}>Profile</Link>}
                 </div>
             </div>
         </div>
